@@ -1,0 +1,1054 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Y-AKIO · Painel da loja</title>
+<link rel="icon" href="../assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,600;0,700;0,800;1,600&family=Bungee&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FBF6EF;--card:#fff;--ink:#1A1210;--ink2:#473B36;--line:#D5C7B6;--soft:#F3EADD;--red:#D71D1E;--redd:#A81216;--redbg:#FDE5E4;--ok:#0B6B2C;--okbg:#DDF3E3;--warn:#8A4700;--warnbg:#FFE7BD;--r:14px}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 Archivo,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
+h1,h2,h3,p{margin:0}
+h1{font:400 30px/1.1 Bungee,Archivo,sans-serif;letter-spacing:.5px}
+h2{font:400 21px/1.15 Bungee,Archivo,sans-serif;letter-spacing:.4px}
+h3{font:800 18px/1.25 Archivo,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+a{color:var(--redd)}
+svg.i{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.sub{color:var(--ink2);font-size:15.5px}
+.num{font-family:Bungee,Archivo,sans-serif;font-weight:400}
+
+/* estrutura */
+.app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+.sb{position:sticky;top:0;height:100vh;background:#fff;border-right:2px solid var(--line);display:flex;flex-direction:column;gap:4px;padding:14px 12px;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 6px 14px}
+.brand img{width:52px;height:52px;border-radius:50%;border:2px solid var(--red)}
+.brand b{font:400 20px/1 Bungee,sans-serif;color:var(--red);display:block}
+.brand small{font-size:13.5px;color:var(--ink2);font-weight:600}
+.nv{display:flex;align-items:center;gap:12px;min-height:50px;padding:0 12px;border:0;background:none;border-radius:12px;font-weight:700;font-size:17px;text-align:left;width:100%;color:var(--ink);text-decoration:none}
+.nv:hover{background:var(--soft)}
+.nv.on{background:var(--red);color:#fff}
+.nv .bd{margin-left:auto;background:var(--red);color:#fff;border-radius:99px;min-width:26px;height:26px;display:grid;place-items:center;font-size:14px;font-weight:800;padding:0 7px}
+.nv.on .bd{background:#fff;color:var(--redd)}
+.sbf{margin-top:auto;display:flex;flex-direction:column;gap:6px;padding-top:12px;border-top:2px solid var(--line)}
+.zync{font-size:13px;font-weight:700;color:var(--ink2);text-align:center;border:1.5px dashed var(--ink2);border-radius:8px;padding:5px 6px;margin-top:6px}
+main{padding:24px 28px 70px;min-width:0}
+.top,.bn{display:none}
+.hd{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.hd .sp{flex:1}
+.lj{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:99px;font-weight:800;font-size:15px;border:2px solid;background:#fff}
+.lj.a{color:var(--ok);border-color:var(--ok);background:var(--okbg)}.lj.f{color:var(--redd);border-color:var(--redd);background:var(--redbg)}
+.lj i{width:11px;height:11px;border-radius:50%;background:currentColor}
+
+/* controles */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:12px;border:2px solid var(--ink);background:#fff;font-weight:800;font-size:16.5px;text-decoration:none;color:var(--ink);text-align:center;line-height:1.15}
+.btn.p{background:var(--red);border-color:var(--red);color:#fff}
+.btn.p:hover{background:var(--redd);border-color:var(--redd)}
+.btn.w{background:#0B6B2C;border-color:#0B6B2C;color:#fff}
+.btn.k{background:var(--ink);color:#fff}
+.btn.s{min-height:44px;padding:0 13px;font-size:15.5px}
+.btn.full{width:100%}
+.btn.d{border-color:var(--redd);color:var(--redd)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{min-height:44px;padding:0 15px;border-radius:99px;border:2px solid var(--ink);background:#fff;font-weight:700;font-size:15.5px;display:inline-flex;align-items:center;gap:7px}
+.chip.on{background:var(--ink);color:#fff}
+.chip b{background:var(--soft);color:var(--ink);border-radius:99px;padding:1px 8px;font-size:14px}
+.chip.on b{background:#fff}
+input[type=text],input[type=tel],input[type=number],input[type=search],select,textarea{width:100%;min-height:48px;border:2px solid var(--ink2);border-radius:11px;background:#fff;padding:9px 12px;font-size:17px}
+textarea{min-height:92px;resize:vertical;line-height:1.4}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid #1259C3;outline-offset:2px}
+.f{display:block}.f>span{display:block;font-weight:700;font-size:15px;margin-bottom:4px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:16px}
+.stack{display:flex;flex-direction:column;gap:14px}
+.tag{display:inline-flex;align-items:center;gap:5px;border-radius:8px;padding:3px 9px;font-size:14px;font-weight:800;background:var(--soft);color:var(--ink);white-space:nowrap}
+.tag.r{background:var(--red);color:#fff}.tag.g{background:var(--okbg);color:var(--ok)}.tag.y{background:var(--warnbg);color:var(--warn)}.tag.k{background:var(--ink);color:#fff}.tag.rl{background:var(--redbg);color:var(--redd)}
+.tag svg.i{width:15px;height:15px}
+.note{background:var(--warnbg);color:#4d2800;border-radius:11px;padding:10px 13px;font-weight:600;font-size:15.5px;display:flex;gap:9px;align-items:flex-start}
+.demo{font-size:14px;color:var(--ink2);font-weight:600}
+.empty{padding:22px 12px;text-align:center;color:var(--ink2);font-weight:600;border:2px dashed var(--line);border-radius:12px}
+
+/* KPIs */
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px}
+.k{background:#fff;border:2px solid var(--line);border-radius:var(--r);padding:13px 15px}
+.k small{display:block;font-size:14.5px;font-weight:700;color:var(--ink2)}
+.k b{display:block;font:400 25px/1.2 Bungee,sans-serif;margin-top:3px;word-break:break-word}
+.k em{display:block;font-style:normal;font-size:14px;color:var(--ink2);font-weight:600;margin-top:2px}
+.k.neg b{color:var(--redd)}.k.pos b{color:var(--ok)}
+
+/* quadro de pedidos */
+.board{display:grid;grid-template-columns:repeat(5,minmax(225px,1fr));gap:12px;overflow-x:auto;padding-bottom:10px;align-items:start}
+.col{background:var(--soft);border-radius:var(--r);padding:10px;display:flex;flex-direction:column;gap:10px;min-height:160px}
+.col>header{display:flex;align-items:center;justify-content:space-between;padding:2px 4px}
+.col>header b{font:400 16.5px Bungee,sans-serif}
+.col>header span{background:var(--ink);color:#fff;border-radius:99px;min-width:30px;height:30px;display:grid;place-items:center;font-weight:800;font-size:15px}
+.pc{background:#fff;border:2px solid var(--ink);border-radius:13px;padding:11px;display:flex;flex-direction:column;gap:7px;cursor:pointer}
+.pc .t1{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap}
+.pc .n{font:400 19px Bungee,sans-serif}
+.pc .cl{font-weight:800;font-size:17.5px;line-height:1.2}
+.pc .it{font-size:15.5px;line-height:1.3}
+.pc .tg{display:flex;gap:5px;flex-wrap:wrap}
+.pc.late{border-color:var(--red);box-shadow:0 0 0 3px var(--redbg)}
+.pc.fresh{animation:pulse 1s ease-in-out 8;border-color:var(--red)}
+.pc.done{border-color:var(--line);cursor:pointer}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(215,29,30,.45)}}
+.cst{display:none}
+
+/* listas */
+.lst{display:flex;flex-direction:column;gap:8px}
+.li{background:#fff;border:2px solid var(--line);border-radius:13px;padding:12px 14px;display:grid;gap:8px 14px;align-items:center}
+.li.cli{grid-template-columns:minmax(0,2.2fr) repeat(4,minmax(0,1fr)) auto;cursor:pointer}
+.li.cli:hover{border-color:var(--ink)}
+.li small{display:block;font-size:13.5px;font-weight:700;color:var(--ink2)}
+.li .v{font-weight:800}
+.li.est{grid-template-columns:minmax(0,1.5fr) minmax(0,1.3fr) auto}
+@media(max-width:899px){.li.est{grid-template-columns:1fr}.lj-d{display:none}}
+.tb{width:100%;border-collapse:collapse}
+.tb th{font-size:14.5px;text-align:left;padding:6px 8px;color:var(--ink2)}
+.tb td{padding:6px 8px;border-top:1.5px solid var(--line);vertical-align:middle}
+.tw{overflow-x:auto}
+.bar{height:16px;background:var(--soft);border-radius:99px;position:relative;overflow:hidden;border:1.5px solid var(--line)}
+.bar>i{position:absolute;inset:0 auto 0 0;border-radius:99px;background:var(--ok)}
+.bar.lo>i{background:var(--red)}.bar.md>i{background:#B45F00}
+.barw{position:relative}.barw>u{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--ink);left:40%;border-radius:2px}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:22px;height:22px;border-radius:50%;border:2px solid var(--redd);background:#fff}
+.dots i.on{background:var(--red)}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:12px;overflow:hidden;flex-wrap:wrap;background:#fff}
+.seg button{min-height:46px;padding:0 15px;border:0;background:#fff;font-weight:700;font-size:15.5px}
+.seg button.on{background:var(--ink);color:#fff}
+.sw{min-height:44px;min-width:44px;border-radius:11px;border:2px solid var(--ok);background:var(--okbg);color:var(--ok);font-weight:800;font-size:14.5px;display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:0 10px}
+.sw.off{border-color:var(--redd);background:var(--red);color:#fff}
+.mx{display:grid;grid-template-columns:minmax(120px,1.1fr) repeat(4,minmax(0,1fr));gap:8px 10px;align-items:center;padding:10px 0;border-top:1.5px solid var(--line)}
+.mx .cel{display:flex;gap:6px;align-items:center}
+.mx .cel label{display:none;font-size:13.5px;font-weight:700}
+.mx input{min-width:0;padding:8px 8px}
+.mxh{display:grid;grid-template-columns:minmax(120px,1.1fr) repeat(4,minmax(0,1fr));gap:10px;font-size:14.5px;font-weight:800;color:var(--ink2);padding-bottom:6px}
+
+/* gráficos */
+.vb{display:flex;align-items:flex-end;gap:3px;height:150px;border-bottom:2px solid var(--ink)}
+.vb div{flex:1;background:var(--red);border-radius:4px 4px 0 0;min-height:2px;position:relative}
+.vb div.z{background:var(--line)}
+.vbl{display:flex;gap:3px;font-size:12.5px;font-weight:700;color:var(--ink2);margin-top:4px}
+.vbl span{flex:1;text-align:center;overflow:hidden;white-space:nowrap}
+.hb{display:grid;grid-template-columns:minmax(84px,auto) minmax(0,1fr) auto;gap:6px 10px;align-items:center;font-size:15.5px;font-weight:700}
+.hb .t{height:22px;background:var(--soft);border-radius:6px;overflow:hidden}
+.hb .t i{display:block;height:100%;background:var(--red);border-radius:6px}
+.hb .t i.k{background:var(--ink)}
+.hero{background:var(--red);color:#fff;border-radius:18px;padding:20px 22px;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 100% 100%,transparent 0 38px,rgba(168,18,22,.75) 39px 42px,transparent 43px 58px,rgba(168,18,22,.75) 59px 62px,transparent 63px 78px,rgba(168,18,22,.75) 79px 82px,transparent 83px);background-size:170px 170px;opacity:.9}
+.hero>*{position:relative}
+.hero .big{font:400 clamp(34px,7vw,56px)/1.05 Bungee,sans-serif;margin:6px 0}
+.hero input{width:84px;min-height:44px;display:inline-block;color:var(--ink)}
+.split{display:flex;height:34px;border-radius:9px;overflow:hidden;border:2px solid var(--ink)}
+.split i{display:grid;place-items:center;font-style:normal;font-weight:800;font-size:14.5px;color:#fff;background:var(--red);min-width:0;overflow:hidden;white-space:nowrap}
+.split i+i{background:var(--ink)}
+.cols2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+
+/* modal e aviso */
+#modal:empty{display:none}
+.mo{position:fixed;inset:0;background:rgba(26,18,16,.62);z-index:50;display:flex;align-items:flex-start;justify-content:center;padding:26px 14px;overflow-y:auto}
+.mb{background:var(--bg);border-radius:18px;width:100%;max-width:640px;border:2px solid var(--ink)}
+.mb.wide{max-width:820px}
+.mb>header{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:2px solid var(--line);position:sticky;top:0;background:var(--bg);border-radius:18px 18px 0 0;z-index:2}
+.mb>header h2{flex:1}
+.mc{padding:16px;display:flex;flex-direction:column;gap:14px}
+.x{width:46px;height:46px;border-radius:12px;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;flex:none}
+#toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:80;display:flex;flex-direction:column;gap:8px;width:min(92vw,520px);pointer-events:none}
+#toast div{background:var(--ink);color:#fff;padding:13px 16px;border-radius:12px;font-weight:700;border-left:8px solid var(--red);box-shadow:0 6px 20px rgba(0,0,0,.3)}
+canvas.art{width:100%;max-width:340px;height:auto;border-radius:14px;border:2px solid var(--ink);display:block;margin:0 auto}
+.tl{display:flex;gap:6px 14px;flex-wrap:wrap;font-size:14.5px;font-weight:700;color:var(--ink2)}
+
+@media(min-width:900px) and (max-width:1199px){
+ .app{grid-template-columns:78px minmax(0,1fr)}
+ .brand div,.nv span.tx,.zync,.sbf .tx{display:none}
+ .nv{justify-content:center;padding:0;position:relative}.nv .bd{position:absolute;top:2px;right:2px;margin:0;min-width:22px;height:22px;font-size:12.5px}
+ .brand{justify-content:center;padding:4px 0 12px}
+ main{padding:20px 18px 60px}
+}
+@media(max-width:899px){
+ .app{display:block}.sb{display:none}
+ main{padding:14px 16px 100px}
+ h1{font-size:24px}
+ .top{display:flex;align-items:center;gap:10px;background:var(--red);color:#fff;padding:9px 14px;position:sticky;top:0;z-index:30}
+ .top img{width:40px;height:40px;border-radius:50%;border:2px solid #fff}
+ .top b{font:400 18px Bungee,sans-serif;flex:1}
+ .top .lj{min-height:44px;font-size:14.5px;padding:0 12px}
+ .bn{display:flex;position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:2px solid var(--ink);z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+ .bn button{flex:1;min-width:0;min-height:62px;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12.5px;font-weight:800;position:relative;color:var(--ink)}
+ .bn button.on{color:#fff;background:var(--red)}
+ .bn .bd{position:absolute;top:5px;left:54%;background:var(--red);color:#fff;border-radius:99px;min-width:21px;height:21px;font-size:12.5px;display:grid;place-items:center;padding:0 5px;border:2px solid #fff}
+ .cst{display:flex;margin-bottom:10px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+ .cst .chip{flex:none}
+ .board{display:block;overflow:visible}
+ .col{display:none}.col.on{display:flex}
+ .li.cli{grid-template-columns:1fr 1fr}
+ .li.cli>.nm,.li.cli>.ac{grid-column:1/-1}
+ .g3{grid-template-columns:1fr 1fr}
+ .mx,.mxh{grid-template-columns:1fr 1fr}
+ .mxh{display:none}
+ .mx>.nm{grid-column:1/-1}
+ .mx .cel{flex-wrap:wrap}.mx .cel label{display:block;width:100%}
+ .mx .cel input{flex:1}
+ .mo{padding:0;align-items:stretch}.mb{border-radius:0;border:0;min-height:100%}.mb>header{border-radius:0}
+ #toast{bottom:76px}
+}
+@media(max-width:520px){.g2.m1{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.pc.fresh{animation:none}}
+</style>
+</head>
+<body>
+<div class="top"><img src="../assets/logo.jpg" alt=""><b>Y-AKIO</b><span id="ljTop"></span></div>
+<div class="app">
+ <aside class="sb" id="sb" aria-label="Menu"></aside>
+ <main id="main"></main>
+</div>
+<nav class="bn" id="bn" aria-label="Menu"></nav>
+<div id="modal"></div>
+<div id="toast" aria-live="polite"></div>
+<script src="../shared/data.js"></script>
+<script>
+'use strict';
+/* ============ base ============ */
+const $ = s => document.querySelector(s), main = $('#main');
+const brl = YK.brl, DIA = 864e5;
+let D = YK.db(), M = null, pend = false, silent = false;
+const known = new Set(D.pedidos.map(p => p.id));
+const S = { view: 'pedidos', col: 'novo', ent: 'acerto', entPer: 'hoje', seg: 'todos', q: '', ord: 'ultimo', est: 'insumos', card: 'menu', tam: 'individual', per: '30', ftel: '', fresh: new Set(), sent: new Set() };
+
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const num = v => { const n = parseFloat(String(v == null ? '' : v).replace(/\./g, m => m).replace(',', '.')); return isFinite(n) ? n : 0; };
+const sod = (t = Date.now()) => { const d = new Date(t); d.setHours(0, 0, 0, 0); return d.getTime(); };
+const dias = iso => iso ? Math.floor((sod() - sod(new Date(iso).getTime())) / DIA) : 999;
+const mins = iso => Math.max(0, Math.round((Date.now() - new Date(iso)) / 6e4));
+const p2 = n => String(n).padStart(2, '0');
+const hm = iso => { const d = new Date(iso); return p2(d.getHours()) + ':' + p2(d.getMinutes()); };
+const dm = iso => { const d = new Date(iso); return p2(d.getDate()) + '/' + p2(d.getMonth() + 1); };
+const quando = iso => { if (!iso) return 'nunca'; const n = dias(iso); return n <= 0 ? 'hoje' : n === 1 ? 'ontem' : 'há ' + n + ' dias'; };
+const dur = m => m < 60 ? m + ' min' : Math.floor(m / 60) + 'h' + p2(m % 60);
+const pnome = n => { const w = String(n || '').trim().split(/\s+/); return /^(dona|seu|sr|sra|dr|dra|d)\.?$/i.test(w[0]) && w[1] ? w[0] + ' ' + w[1] : /^(escrit|cl[ií]nica|loja|col[eé]gio|consult)/i.test(w[0]) ? 'pessoal' : w[0] || ''; };
+const telFmt = t => { t = YK.tel(t); return t.length >= 10 ? '(' + t.slice(0, 2) + ') ' + t.slice(2, t.length - 4) + '-' + t.slice(-4) : t; };
+const sum = (a, f) => a.reduce((s, x) => s + (f(x) || 0), 0);
+const pct = (a, b) => b ? Math.round(a / b * 100) : 0;
+const cli = id => D.clientes.find(c => c.id === id);
+const ped = id => D.pedidos.find(p => p.id === id);
+const tamN = id => (D.tamanhos.find(t => t.id === id) || {}).nome || id;
+const sabN = id => (D.sabores.find(t => t.id === id) || {}).nome || id;
+const entN = id => (D.entregadores.find(e => e.id === id) || {}).nome || 'Sem entregador';
+const stN = id => (YK.STATUS.find(s => s.id === id) || {}).nome || id;
+const CANAL = { site: 'Site', whatsapp: 'WhatsApp', balcao: 'Balcão', ifood: 'iFood' };
+const pagN = id => (YK.PAGAMENTOS.find(x => x.id === id) || {}).nome || id || '';
+const pagOn = id => !!(YK.PAGAMENTOS.find(x => x.id === id) || {}).online;
+const isPago = p => p.pago != null ? !!p.pago : (pagOn(p.pagamento) || p.canal === 'ifood'); // pedidos antigos sem o campo: assume pelo tipo
+const cfgPag = (d = D) => { const c = d.config.pagamentos = d.config.pagamentos || {}; c.mercadoPago = c.mercadoPago || { conectado: false, conta: '' }; c.aceita = c.aceita || {}; c.taxasPct = c.taxasPct || {}; return c; };
+const viaMP = p => p.canal === 'site' && pagOn(p.pagamento) && isPago(p);
+const taxaMP = p => viaMP(p) ? p.total * (cfgPag().taxasPct[p.pagamento] || 0) / 100 : 0;
+const tSh = (iso, p) => +new Date(iso) - (p.demoShift || 0); // pedidos de exemplo "de hoje" têm o relógio deslocado para cair no horário de funcionamento
+function pagTag(p) {
+  const n = esc(pagN(p.pagamento));
+  if (isPago(p)) return `<span class="tag g">${ic('check')}${p.canal === 'ifood' ? 'Pago no iFood' : viaMP(p) ? 'Pago online' : 'Pago'} · ${n}</span>`;
+  if (/concluido|cancelado/.test(p.status)) return `<span class="tag">${n}</span>`;
+  return `<span class="tag y" style="white-space:normal">Cobrar na ${p.tipo === 'entrega' ? 'entrega' : 'retirada'}: ${brl(p.total)} · ${n}${p.pagamento === 'dinheiro' && p.troco > p.total ? ' · troco p/ ' + brl(p.troco) : ''}</span>`;
+}
+const fmtQ = (e, q) => e.un === 'g' ? (Math.abs(q) >= 1000 ? (q / 1000).toFixed(q % 1000 ? 1 : 0).replace('.', ',') + ' kg' : Math.round(q) + ' g') : Math.round(q) + ' un';
+const mut = fn => { const d = YK.db(); const r = fn(d); YK.save(d); return r; };
+
+const IC = {
+  list: 'M9 5h11M9 12h11M9 19h11M4 5h.01M4 12h.01M4 19h.01', truck: 'M3 6h11v10H3zM14 9h4l3 3v4h-7zM7 19a2 2 0 100-4 2 2 0 000 4zM17 19a2 2 0 100-4 2 2 0 000 4z',
+  users: 'M16 20v-1a4 4 0 00-4-4H7a4 4 0 00-4 4v1M9.5 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM21 20v-1a4 4 0 00-3-3.8M16 4.2a3.5 3.5 0 010 6.6',
+  award: 'M12 15a6 6 0 100-12 6 6 0 000 12zM8.5 14l-1.5 7 5-3 5 3-1.5-7', box: 'M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8',
+  book: 'M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2zM4 21V5M9 8h6M9 12h6', chart: 'M4 20V10M10 20V4M16 20v-7M22 20H2',
+  msg: 'M21 11.5a8.4 8.4 0 01-12.3 7.4L3 21l2.1-5.7A8.4 8.4 0 1121 11.5z', plus: 'M12 5v14M5 12h14', x: 'M6 6l12 12M18 6L6 18', check: 'M5 12l5 5 9-10',
+  clock: 'M12 21a9 9 0 100-18 9 9 0 000 18zM12 7v5l3 2', pin: 'M12 21s7-6.2 7-11a7 7 0 10-14 0c0 4.8 7 11 7 11zM12 12a2 2 0 100-4 2 2 0 000 4z',
+  pause: 'M8 5v14M16 5v14', play: 'M7 4l13 8-13 8z', alert: 'M12 3l10 18H2zM12 10v5M12 18h.01', down: 'M12 4v12M6 11l6 6 6-6M4 21h16',
+  ext: 'M14 4h6v6M20 4l-9 9M18 14v6H4V6h6', reset: 'M3 12a9 9 0 109-9 9 9 0 00-7 3.4M3 4v4h4', more: 'M4 6h16M4 12h16M4 18h16', copy: 'M9 9h11v11H9zM5 15H4V4h11v1',
+  bag: 'M6 7h12l1 13H5zM9 7a3 3 0 016 0', arrow: 'M5 12h14M13 6l6 6-6 6', trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',
+};
+const ic = n => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="${IC[n] || ''}"/></svg>`;
+
+function toast(t, ms) {
+  const el = document.createElement('div'); el.textContent = t; $('#toast').appendChild(el);
+  setTimeout(() => el.remove(), ms || 4200);
+}
+let actx;
+function beep() {
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    [[880, 0], [1175, .16]].forEach(([f, t]) => {
+      const o = actx.createOscillator(), g = actx.createGain(); o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(.0001, actx.currentTime + t); g.gain.exponentialRampToValueAtTime(.35, actx.currentTime + t + .02); g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime + t + .22);
+      o.connect(g); g.connect(actx.destination); o.start(actx.currentTime + t); o.stop(actx.currentTime + t + .25);
+    });
+  } catch (e) {}
+}
+function copiar(t) {
+  const ok = () => toast('Copiado. É só colar no WhatsApp.');
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(ok, () => fb()); else fb();
+  function fb() { const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select(); try { document.execCommand('copy'); ok(); } catch (e) {} a.remove(); }
+}
+const siteUrl = () => location.protocol.startsWith('http') ? new URL('../site/index.html', location.href).href.replace(/index\.html$/, '') : '';
+const viaSite = () => siteUrl() ? 'Peça direto pelo nosso site: ' + siteUrl() : 'Peça direto pelo nosso site ou aqui no WhatsApp.';
+
+/* ============ dados de demonstração ============ */
+function gerarDemo() {
+  const d = YK.db(); if (d.painelDemo) return;
+  let s = 20261007; const rnd = () => { s |= 0; s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const pick = a => a[Math.floor(rnd() * a.length)];
+  const wp = o => { let r = rnd() * sum(Object.values(o), x => x); for (const k in o) { r -= o[k]; if (r <= 0) return k; } return Object.keys(o)[0]; };
+  const now = Date.now(), iso = t => new Date(t).toISOString();
+  const ruas = { 'Graça': 'Rua da Graça', 'Vitória': 'Corredor da Vitória', 'Canela': 'Rua Marechal Floriano', 'Barra': 'Av. Princesa Isabel', 'Garcia': 'Av. Leovigildo Filgueiras', 'Campo Grande': 'Av. Sete de Setembro', 'Federação': 'Rua Caetano Moura', 'Ondina': 'Av. Milton Santos', 'Rio Vermelho': 'Rua da Paciência' };
+  const extra = [
+    ['Camila Andrade', '71992220001', 'Graça', 8, 11, 1], ['João Pedro Sá', '71992220002', 'Barra', 9, 6, 0], ['Fernanda Queiroz', '71992220003', 'Vitória', 1, 0, 0],
+    ['Clínica Sorrir Graça', '71992220004', 'Graça', 2, 17, 2], ['Igor Nascimento', '71992220005', 'Canela', 1, 0, 0], ['Patrícia Lobo', '71992220006', 'Ondina', 1, 0, 0],
+    ['Vitor Hugo Ramos', '71992220007', 'Federação', 2, 0, 0], ['Sílvia Matos', '71992220008', 'Rio Vermelho', 5, 7, 0], ['Leandro Costa', '71992220009', 'Garcia', 3, 3, 0],
+    ['Helena Dourado', '71992220010', 'Campo Grande', 6, 9, 0],
+  ];
+  extra.forEach(([nome, tel, bairro, selos, base, cc], i) => {
+    if (YK.clientePorTel(d, tel)) return;
+    d.clientes.push({ id: 'x' + (i + 1), nome, tel, bairro, endereco: ruas[bairro] + ', ' + (40 + i * 37), selos, cartoesCompletos: cc, vouchers: [], pedidos: base, gasto: base * 56, primeiro: iso(now - (base ? 70 + i * 11 : 26) * DIA), ultimo: i === 7 ? iso(now - 44 * DIA) : i === 8 ? iso(now - 61 * DIA) : null, obs: i === 3 ? 'Pede para o almoço da equipe. Entregar na recepção.' : i === 9 ? 'Alergia a camarão' : '', tags: base ? [] : ['novo'] });
+  });
+  if (!d.clientes.find(c => !c.tel)) d.clientes.push({ id: 'anon', nome: 'Sem telefone (balcão / iFood)', tel: '', bairro: '', endereco: '', selos: 0, cartoesCompletos: 0, vouchers: [], pedidos: 0, gasto: 0, primeiro: iso(now - 90 * DIA), ultimo: null, obs: '', tags: ['anon'] });
+  const C = id => d.clientes.find(c => c.id === id);
+  C('x1').vouchers.push({ id: YK.uid('v'), premio: d.config.fidelidade.premio, criado: iso(now - 40 * DIA), usado: iso(now - 33 * DIA) });
+  C('x4').vouchers.push({ id: YK.uid('v'), premio: d.config.fidelidade.premio, criado: iso(now - 20 * DIA), usado: null });
+  d.clientes.forEach(c => { if (!c.endereco && c.bairro && ruas[c.bairro]) c.endereco = ruas[c.bairro] + ', ' + (100 + Math.floor(rnd() * 800)) + (rnd() < .6 ? ', apto ' + (101 + Math.floor(rnd() * 9) * 100) : ''); });
+
+  const plano = [ // [clienteId, dias atrás, canais]
+    ['c1', [1, 8, 15, 24], ['site', 'whatsapp']], ['c2', [2, 9, 16, 23, 27], ['site']], ['c4', [3, 8, 13, 18, 22, 27], ['whatsapp', 'site', 'site']], ['c5', [6], ['ifood']],
+    ['c6', [3, 12, 22], ['site']], ['c8', [4, 11, 18, 25], ['whatsapp']], ['x1', [2, 9, 17, 26], ['site']], ['x2', [3, 10, 19], ['whatsapp', 'site']],
+    ['x3', [5, 13, 20], ['site', 'ifood', 'ifood']], ['x4', [6, 14, 21], ['whatsapp']], ['x5', [4], ['site']], ['x6', [8], ['site']], ['x7', [1, 12], ['site', 'ifood']],
+    ['x10', [7, 15, 23], ['site', 'whatsapp', 'balcao']], ['anon', [2, 6, 14, 19, 28], ['ifood']], ['anon', [3, 16], ['balcao']],
+  ];
+  const nomesAnon = ['Bruno', 'Larissa', 'Caio', 'Tainá', 'Seu Jorge', 'Mônica', 'Pedro'];
+  function mk(c, criado, canal, o) {
+    o = o || {}; const h = new Date(criado).getHours(), almoco = h < 16;
+    const big = /Clínica|Escritório/.test(c.nome);
+    const tam = o.tam || (big ? wp({ meia: 3, individual: 7 }) : almoco ? wp({ individual: 88, mini: 7, meia: 5 }) : wp({ individual: 77, meia: 13, familia: 2, mini: 8 }));
+    let sab = o.sab || wp({ frango: 26, carne: 22, camarao: 18, mistao: 16, misto: 10, vegetariano: 8 });
+    if (/camarão/i.test(c.obs) && /camarao|mistao/.test(sab)) sab = 'frango';
+    const itens = [{ tipo: 'yaki', tamanho: tam, sabor: sab, qtd: o.qtd || (tam === 'individual' ? (big ? 2 : rnd() < .13 ? 2 : 1) : 1), obs: o.iobs || (rnd() < .12 ? pick(['Sem cebolinha', 'Bem passado', 'Pouco molho', 'Caprichar nos legumes']) : ''), preco: d.precos[tam][sab] }];
+    if (o.rol !== 0 && rnd() < .46) { const e = pick(d.extras.filter(x => /^rol-/.test(x.id))); itens.push({ tipo: 'extra', id: e.id, nome: e.nome, qtd: rnd() < .4 ? 2 : 1, preco: e.preco }); }
+    if (rnd() < .36) { const e = pick(d.extras.filter(x => !/^rol-/.test(x.id))); itens.push({ tipo: 'extra', id: e.id, nome: e.nome, qtd: itens[0].qtd, preco: e.preco }); }
+    const tipo = o.tipo || (canal === 'balcao' ? 'retirada' : canal === 'ifood' ? 'entrega' : rnd() < .42 ? 'retirada' : 'entrega');
+    const bairro = c.bairro || pick(['Graça', 'Vitória', 'Barra', 'Canela']);
+    const b = d.bairros.find(x => x.nome === bairro) || { taxa: 8 };
+    const subtotal = sum(itens, i => i.preco * i.qtd), taxa = tipo === 'entrega' ? b.taxa : 0;
+    const pag = o.pag || (canal === 'site' ? wp({ pix: 56, credito: 22, debito: 8, dinheiro: 6, cartao: 8 }) : canal === 'ifood' ? wp({ pix: 50, credito: 50 }) : wp({ pix: 52, dinheiro: 22, cartao: 26 }));
+    const pago = canal === 'ifood' || pag === 'pix' || pag === 'credito' || pag === 'debito';
+    const st = o.status || 'concluido', t0 = +new Date(criado), hist = [{ s: 'novo', t: iso(t0) }];
+    const seq = ['preparo', 'pronto', tipo === 'entrega' ? 'rota' : null, 'concluido'].filter(Boolean), stp = { preparo: 3, pronto: 15 + Math.floor(rnd() * 9), rota: 3, concluido: tipo === 'entrega' ? 14 + Math.floor(rnd() * 10) : 7 };
+    let t = t0; for (const x of seq) { if (st === 'novo') break; t += (o.stp && o.stp[x] != null ? o.stp[x] : stp[x]) * 6e4; hist.push({ s: x, t: iso(Math.min(t, now + (o.shift || 0))) }); if (x === st) break; }
+    const temEnt = tipo === 'entrega' && (st === 'rota' || st === 'concluido');
+    const entId = temEnt ? (canal === 'ifood' ? 'e3' : rnd() < .6 ? 'e1' : 'e2') : null;
+    const f = d.config.fidelidade;
+    return {
+      canal, cliente: { nome: c.tel ? c.nome : pick(nomesAnon), tel: c.tel }, tipo,
+      endereco: tipo === 'entrega' ? { bairro, rua: (c.endereco || ruas[bairro] + ', 120').split(',')[0], numero: ((c.endereco || '').split(',')[1] || '120').trim(), compl: ((c.endereco || '').split(',')[2] || '').trim(), ref: rnd() < .3 ? pick(['Portaria 24h', 'Ao lado da farmácia', 'Prédio azul, interfone 4']) : '' } : null,
+      itens, pagamento: pag, pago, pagoEm: pago ? iso(t0) : null, troco: pag === 'dinheiro' ? Math.ceil((subtotal + taxa) / 50) * 50 : 0, obs: '', demoShift: o.shift || 0, demoN: o.shift ? hist.length : 0,
+      id: YK.uid('p') + Math.floor(rnd() * 1e5).toString(36), num: 0, clienteId: c.id, subtotal, taxa, total: subtotal + taxa, status: st, criado: iso(t0), hist,
+      entregadorId: entId, repasse: temEnt ? (canal === 'ifood' ? taxa + 4 : taxa + (rnd() < .22 ? 2 : rnd() < .2 ? -1 : 0)) : 0,
+      repassePago: temEnt && !o.c ? iso(sod(t0) + 21.5 * 36e5) : null, seloDado: st === 'concluido' && f.canais.includes(canal) && subtotal >= f.pedidoMinimo, estoqueBaixado: st !== 'novo', demo: true,
+    };
+  }
+  const hist = [];
+  plano.forEach(([cid, ds, canais]) => ds.forEach((n, i) => {
+    const c = C(cid); if (!c) return;
+    let base = sod(now) - n * DIA; if (new Date(base).getDay() === 1) base -= DIA;
+    const min = rnd() < .45 ? 11 * 60 + 5 + Math.floor(rnd() * 160) : 18 * 60 + 5 + Math.floor(rnd() * 160);
+    hist.push(mk(c, base + min * 6e4, canais[i % canais.length], cid === 'c8' && i === 2 ? { tam: 'familia' } : undefined)); // 1 família no mês: é raro, mas existe
+  }));
+  // pedidos "de hoje": se a demo for gerada fora do horário (ou no comecinho do turno), o relógio deles é deslocado para 12h40 ou 19h40
+  const mn = new Date(now).getHours() * 60 + new Date(now).getMinutes(), dentro = (mn >= 720 && mn < 840) || (mn >= 1140 && mn < 1260);
+  const shift = dentro ? 0 : sod(now) + (mn < 960 ? 760 : 1180) * 6e4 - now, hj = (m, canal, o) => mk(C(o.c), now + shift - m * 6e4, canal, Object.assign(o, { shift }));
+  hist.push(hj(58, 'site', { c: 'c4', tipo: 'retirada', tam: 'individual', sab: 'mistao', qtd: 1, pag: 'credito' }));
+  hist.sort((a, b) => new Date(a.criado) - new Date(b.criado));
+  hist.forEach((p, i) => { p.num = d.seq - d.pedidos.length - hist.length + 1 + i; });
+  // atualiza CRM dos clientes criados aqui e a data do último pedido de todos
+  hist.forEach(p => { const c = C(p.clienteId); if (/^x|anon/.test(c.id)) { c.pedidos++; c.gasto += p.total; } if (c.tel && (!c.ultimo || new Date(p.criado) > new Date(c.ultimo))) c.ultimo = p.hist[p.hist.length - 1].t; });
+  const hoje = [
+    hj(39, 'whatsapp', { c: 'c8', status: 'rota', tipo: 'entrega', tam: 'meia', sab: 'misto', qtd: 1, pag: 'cartao', stp: { preparo: 2, pronto: 22, rota: 3 } }),
+    hj(21, 'site', { c: 'x1', status: 'pronto', tipo: 'entrega', tam: 'individual', sab: 'mistao', qtd: 1, pag: 'credito', stp: { preparo: 2, pronto: 16 } }),
+    hj(28, 'whatsapp', { c: 'c1', status: 'preparo', tipo: 'retirada', tam: 'individual', sab: 'frango', qtd: 1, pag: 'pix', stp: { preparo: 3 } }),
+    hj(9, 'site', { c: 'c6', status: 'preparo', tipo: 'entrega', tam: 'individual', sab: 'carne', qtd: 1, pag: 'dinheiro', iobs: 'Sem cebolinha', stp: { preparo: 2 } }),
+    hj(2, 'site', { c: 'c2', status: 'novo', tipo: 'entrega', tam: 'individual', sab: 'camarao', qtd: 1, pag: 'pix' }),
+  ];
+  hoje.forEach(p => { p.num = ++d.seq; });
+  d.pedidos = hoje.concat(hist, d.pedidos);
+  d.pedidos.sort((a, b) => new Date(b.criado) - new Date(a.criado));
+  d.movEstoque = d.movEstoque.concat([
+    { t: iso(now - 1 * DIA - 3e6), tipo: 'perda', ref: 'Descarte: legumes passaram do ponto', itens: { legumes: -400 } },
+    { t: iso(now - 2 * DIA - 5e6), tipo: 'entrada', ref: 'Compra: frango (fornecedor da feira)', itens: { frango: 5000 }, valor: 110 },
+    { t: iso(now - 3 * DIA - 2e6), tipo: 'entrada', ref: 'Compra: macarrão (atacado)', itens: { macarrao: 10000 }, valor: 120 },
+  ]);
+  d.painelDemo = true; silent = true; YK.save(d); silent = false;
+}
+
+/* ============ casca: menu, navegação, render ============ */
+const NAV = [['pedidos', 'Pedidos', 'list'], ['entregas', 'Entregas', 'truck'], ['clientes', 'Clientes', 'users'], ['fidelidade', 'Fidelidade', 'award'], ['estoque', 'Estoque', 'box'], ['cardapio', 'Cardápio', 'book'], ['resultados', 'Resultados', 'chart']];
+const V = {}, MOD = {}, A = {}, CH = {}, IN = {};
+const baixos = () => D.estoque.filter(e => e.qtd < e.min);
+const badge = id => id === 'pedidos' ? D.pedidos.filter(p => p.status === 'novo').length : id === 'estoque' ? baixos().length : id === 'entregas' ? D.pedidos.filter(p => p.status === 'pronto' && p.tipo === 'entrega').length : 0;
+function ljHtml() { const a = YK.aberta(D), m = D.config.lojaAberta; return `<button class="lj ${a ? 'a' : 'f'}" data-a="go" data-v="cardapio" title="Abrir ou fechar a loja"><i></i>${a ? 'Loja aberta' : 'Loja fechada'}${m === 'auto' ? '' : ' (manual)'}</button>`; }
+function shell() {
+  const bd = id => { const n = badge(id); return n ? `<span class="bd">${n}</span>` : ''; };
+  $('#sb').innerHTML = `<div class="brand"><img src="../assets/logo.jpg" alt=""><div><b>Y-AKIO</b><small>Painel da loja</small></div></div>` +
+    NAV.map(([id, t, i]) => `<button class="nv ${S.view === id ? 'on' : ''}" data-a="go" data-v="${id}" title="${t}">${ic(i)}<span class="tx">${t}</span>${bd(id)}</button>`).join('') +
+    `<div class="sbf"><a class="nv" href="../site/index.html" target="_blank" rel="noopener" title="Ver site do cliente">${ic('ext')}<span class="tx">Ver site do cliente</span></a>
+     <button class="nv" data-a="reset" title="Reiniciar demonstração">${ic('reset')}<span class="tx">Reiniciar demonstração</span></button><div class="zync">Demonstração Zync · dados de exemplo</div></div>`;
+  const mob = NAV.slice(0, 4);
+  $('#bn').innerHTML = mob.map(([id, t, i]) => `<button class="${S.view === id ? 'on' : ''}" data-a="go" data-v="${id}">${ic(i)}${t}${bd(id)}</button>`).join('') +
+    `<button class="${mob.some(m => m[0] === S.view) ? '' : 'on'}" data-a="mais">${ic('more')}Mais${badge('estoque') ? `<span class="bd">${badge('estoque')}</span>` : ''}</button>`;
+  $('#ljTop').innerHTML = ljHtml();
+}
+function render() { pend = false; shell(); main.innerHTML = V[S.view](); if (S.view === 'fidelidade') fidBusca(); }
+function safeRender() { const a = document.activeElement; if (a && main.contains(a) && /INPUT|TEXTAREA|SELECT/.test(a.tagName)) { pend = true; shell(); } else render(); }
+main.addEventListener('focusout', () => setTimeout(() => { if (pend) safeRender(); }, 60));
+function go(v) { S.view = v; try { history.replaceState(null, '', '#' + v); } catch (e) {} render(); window.scrollTo(0, 0); }
+function openM(o) { M = o; renderM(); }
+function closeM() { M = null; $('#modal').innerHTML = ''; document.body.style.overflow = ''; }
+function renderM() {
+  if (!M) return closeM(); const r = MOD[M.t](); if (!r) return closeM();
+  const sc = $('.mo') ? $('.mo').scrollTop : 0;
+  $('#modal').innerHTML = `<div class="mo" data-a="bg"><div class="mb ${r.wide ? 'wide' : ''}" role="dialog" aria-modal="true"><header><h2>${r.t}</h2><button class="x" data-a="close" aria-label="Fechar">${ic('x')}</button></header><div class="mc">${r.b}</div></div></div>`;
+  document.body.style.overflow = 'hidden'; $('.mo').scrollTop = sc; if (r.after) r.after();
+}
+const hd = (t, sub, right) => `<div class="hd"><div><h1>${t}</h1>${sub ? `<p class="sub">${sub}</p>` : ''}</div><span class="sp"></span>${right || ''}</div>`;
+const fld = (l, h) => `<label class="f"><span>${l}</span>${h}</label>`;
+const inp = (k, ph, type, extra) => `<input type="${type || 'text'}" data-m="${k}" value="${esc(M[k] == null ? '' : M[k])}" placeholder="${esc(ph || '')}" ${extra || ''}>`;
+const segBtn = (k, opts, cur, a) => `<div class="seg">${opts.map(([v, t]) => `<button type="button" class="${String(cur) === String(v) ? 'on' : ''}" data-a="${a || 'mset'}" data-k="${k}" data-v="${v}">${t}</button>`).join('')}</div>`;
+
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-a]'); if (!el) return;
+  if (el.dataset.a === 'bg') { if (e.target === el) closeM(); return; }
+  if (el.tagName !== 'A') e.preventDefault();
+  const f = A[el.dataset.a]; if (f) f(el, e);
+});
+['input', 'change'].forEach(ev => document.addEventListener(ev, e => {
+  const el = e.target; if (!el.dataset) return;
+  if (el.dataset.m && M) M[el.dataset.m] = el.type === 'checkbox' ? el.checked : el.value;
+  const f = (ev === 'input' ? IN : CH)[el.dataset[ev === 'input' ? 'n' : 'c']]; if (f) f(el);
+}));
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && M) closeM(); });
+A.go = el => { closeM(); go(el.dataset.v); };
+A.close = closeM;
+A.mset = el => { M[el.dataset.k] = el.dataset.v; renderM(); };
+A.sset = el => { S[el.dataset.k] = el.dataset.v; render(); };
+A.copy = el => copiar(el.dataset.t || ($(el.dataset.from) || {}).value || '');
+A.mais = () => openM({ t: 'mais' });
+MOD.mais = () => ({ t: 'Mais', b: NAV.slice(4).map(([id, t, i]) => `<button class="btn full" data-a="go" data-v="${id}">${ic(i)}${t}${badge(id) ? ` <span class="tag r">${badge(id)}</span>` : ''}</button>`).join('') +
+  `<a class="btn full" href="../site/index.html" target="_blank" rel="noopener">${ic('ext')}Ver site do cliente</a><button class="btn full d" data-a="reset">${ic('reset')}Reiniciar demonstração</button><div class="zync">Demonstração Zync · dados de exemplo</div>` });
+A.reset = () => { if (!confirm('Reiniciar a demonstração? Tudo volta ao estado inicial de exemplo.')) return; silent = true; YK.reset(); gerarDemo(); silent = false; D = YK.db(); known.clear(); D.pedidos.forEach(p => known.add(p.id)); S.fresh.clear(); closeM(); render(); toast('Demonstração reiniciada.'); };
+
+/* ============ 1. PEDIDOS ============ */
+const resumoItens = p => p.itens.map(i => i.qtd + '× ' + (i.tipo === 'yaki' ? tamN(i.tamanho) + ' ' + sabN(i.sabor) + (i.gratis ? ' (grátis)' : '') : i.nome)).join(', ');
+const proximo = p => p.status === 'novo' ? { s: 'preparo', t: 'Mandar pra chapa' } : p.status === 'preparo' ? { s: 'pronto', t: 'Está pronto' } : p.status === 'pronto' ? (p.tipo === 'entrega' ? { s: 'rota', t: 'Saiu p/ entrega' } : { s: 'concluido', t: 'Cliente retirou' }) : p.status === 'rota' ? { s: 'concluido', t: 'Entregue' } : null;
+const tHist = (p, s) => { const h = p.hist.filter(x => x.s === s).pop(); return h ? h.t : p.criado; };
+function tempoTag(p) {
+  if (p.status === 'concluido' || p.status === 'cancelado') return `<span class="tag">${dias(p.criado) ? dm(p.criado) + ' ' : ''}${hm(p.criado)}</span>`;
+  if (p.status === 'rota') return `<span class="tag k">${ic('truck')}na rua ${dur(desde(p, 'rota'))}</span>`;
+  const m = desde(p), late = m > D.config.tempoPreparoMin;
+  return `<span class="tag ${late ? 'r' : 'y'}">${ic(late ? 'alert' : 'clock')}${dur(m)}</span>`;
+}
+// minutos desde a criação (ou desde um status), descontando o deslocamento de relógio dos pedidos de exemplo
+function desde(p, s) { let i = -1; if (s) p.hist.forEach((h, k) => { if (h.s === s) i = k; }); const t = s && i >= 0 ? p.hist[i].t : p.criado; return mins(!s || i < 0 || i < (p.demoN || 0) ? tSh(t, p) : t); }
+const atrasado = p => /novo|preparo|pronto/.test(p.status) && desde(p) > D.config.tempoPreparoMin;
+function pedCard(p) {
+  const n = proximo(p), c = cli(p.clienteId), obs = c && c.tel && c.obs;
+  return `<article class="pc ${atrasado(p) ? 'late' : ''} ${S.fresh.has(p.id) ? 'fresh' : ''} ${n ? '' : 'done'}" data-a="ver" data-id="${p.id}">
+   <div class="t1"><span class="n">#${p.num}</span>${tempoTag(p)}</div>
+   <div class="cl">${esc(p.cliente.nome)}</div>
+   <div class="it">${esc(resumoItens(p))}</div>
+   ${obs || p.obs || p.itens.some(i => i.obs) ? `<div class="tag rl" style="white-space:normal">${ic('alert')}${esc([obs, p.obs].concat(p.itens.map(i => i.obs)).filter(Boolean).join(' · '))}</div>` : ''}
+   <div class="tg"><span class="tag ${p.tipo === 'entrega' ? 'k' : ''}">${ic(p.tipo === 'entrega' ? 'truck' : 'bag')}${p.tipo === 'entrega' ? esc((p.endereco || {}).bairro || 'Entrega') : 'Retirada'}</span><span class="tag ${p.canal === 'ifood' ? 'rl' : ''}">${CANAL[p.canal] || p.canal}</span>${isPago(p) || !n ? `<span class="tag">${brl(p.total)}</span>` : ''}${pagTag(p)}</div>
+   ${n ? `<button class="btn p full" data-a="av" data-id="${p.id}">${n.t} ${ic('arrow')}</button>` : ''}</article>`;
+}
+V.pedidos = () => {
+  const cols = YK.STATUS.filter(s => s.id !== 'cancelado').map(s => {
+    let l = D.pedidos.filter(p => p.status === s.id);
+    if (s.id === 'concluido') l = l.filter(p => dias(p.criado) === 0); else l = l.slice().reverse();
+    return { s, l };
+  });
+  const atr = D.pedidos.filter(atrasado).length;
+  return hd('Pedidos', `Toque no botão vermelho para avançar. Tempo de preparo combinado: ${D.config.tempoPreparoMin} min.`, `<span class="lj-d">${ljHtml()}</span><button class="btn p" data-a="novoPed">${ic('plus')}Novo pedido manual</button>`) +
+    (atr ? `<div class="note" style="margin-bottom:12px;background:var(--redbg);color:var(--redd)">${ic('alert')}<span>${atr} pedido${atr > 1 ? 's passaram' : ' passou'} do tempo de preparo.</span></div>` : '') +
+    `<div class="chips cst">${cols.map(c => `<button class="chip ${S.col === c.s.id ? 'on' : ''}" data-a="sset" data-k="col" data-v="${c.s.id}">${c.s.nome}<b>${c.l.length}</b></button>`).join('')}</div>
+    <div class="board">${cols.map(c => `<section class="col ${S.col === c.s.id ? 'on' : ''}"><header><b>${c.s.nome}${c.s.id === 'concluido' ? ' hoje' : ''}</b><span>${c.l.length}</span></header>${c.l.map(pedCard).join('') || `<div class="empty">${c.s.id === 'novo' ? 'Nenhum pedido novo. Quando chegar um pelo site, ele aparece aqui sozinho e toca um aviso.' : 'Nada aqui agora.'}</div>`}</section>`).join('')}</div>
+    <p class="demo" style="margin-top:14px">Demonstração: faça um pedido no <a href="../site/index.html" target="_blank" rel="noopener">site do cliente</a> em outra aba e veja ele cair em "Novo".</p>`;
+};
+A.ver = el => openM({ t: 'ped', id: el.dataset.id });
+A.av = el => avancar(el.dataset.id);
+function avancar(id) {
+  const p = ped(id), n = p && proximo(p); if (!n) return;
+  if (n.s === 'rota') return openSaida(id);
+  const antes = baixos().length, r = YK.mudarStatus(id, n.s); S.fresh.delete(id);
+  if (M && M.t === 'ped') renderM();
+  if (n.s === 'concluido') return posConcluir(r);
+  toast(`#${p.num} agora está em "${stN(n.s)}".` + (n.s === 'preparo' ? ' Estoque baixado.' : ''));
+  if (n.s === 'preparo' && baixos().length > antes) toast('Atenção: um insumo ficou abaixo do mínimo. Veja em Estoque.', 6000);
+}
+function posConcluir(r) {
+  const p = r.pedido, c = r.cliente, f = D.config.fidelidade;
+  if (r.ganhouVoucher) return openM({ t: 'voucher', cid: c.id, num: p.num });
+  if (p.seloDado) toast(`#${p.num} concluído. Selo carimbado: ${pnome(c.nome)} tem ${c.selos} de ${f.meta}.`, 5500);
+  else toast(`#${p.num} concluído. Sem selo: ${p.canal === 'ifood' ? 'pedido do iFood não pontua' : !f.canais.includes(p.canal) ? 'canal não participa' : 'abaixo do pedido mínimo'}.`, 5500);
+}
+MOD.voucher = () => {
+  const c = cli(M.cid), f = D.config.fidelidade;
+  return { t: 'Cartão completo!', b: `<div class="hero"><p style="font-weight:800">Pedido #${M.num} concluído</p><p class="big">${esc(pnome(c.nome))} ganhou 1 ${esc(f.premio)}</p><p style="font-weight:600">O voucher já está no cadastro e aparece no site quando o cliente digita o telefone. Vale por ${f.validadeDias} dias.</p></div>
+   <a class="btn w full" target="_blank" rel="noopener" href="${YK.waLink(`Parabéns, ${pnome(c.nome)}! Você completou seu cartão fidelidade do Y-AKIO e ganhou 1 ${f.premio}. É só usar no seu próximo pedido. ${viaSite()}`, '55' + c.tel)}">${ic('msg')}Avisar ${esc(pnome(c.nome))} no WhatsApp</a>
+   <button class="btn full" data-a="arte" data-id="${c.id}">${ic('award')}Gerar arte do cartão</button>` };
+};
+const msgCli = {
+  recebido: p => `Oi, ${pnome(p.cliente.nome)}! Aqui é do Y-AKIO. Recebemos seu pedido #${p.num} e ele já vai pra chapa.\n\n${resumoItens(p)}\nTotal: ${brl(p.total)} (${pagN(p.pagamento)}${isPago(p) ? ', já pago' : ''})\n\n${p.tipo === 'entrega' ? 'Previsão de entrega' : 'Previsão para retirada'}: ${D.config.tempoPreparoMin} a ${D.config.tempoPreparoMin + (p.tipo === 'entrega' ? 20 : 10)} min.`,
+  saiu: p => `${pnome(p.cliente.nome)}, seu yakisoba saiu para entrega agora! Pedido #${p.num}${p.entregadorId && !(D.entregadores.find(e => e.id === p.entregadorId) || {}).ifood ? ' com ' + pnome(entN(p.entregadorId)) : ''}.${p.rastreio ? '\nAcompanhe: ' + p.rastreio : ''}\n${isPago(p) ? 'Pagamento já confirmado (' + pagN(p.pagamento) + ').' : 'Total a pagar: ' + brl(p.total) + ' (' + pagN(p.pagamento) + ').' + (p.pagamento === 'dinheiro' && p.troco > p.total ? ' Troco para ' + brl(p.troco) + '.' : '')}`,
+  retirada: p => `${pnome(p.cliente.nome)}, seu pedido #${p.num} está pronto para retirada! Estamos na ${YK.LOJA.endereco}. Te esperamos.`,
+};
+MOD.ped = () => {
+  const p = ped(M.id); if (!p) return null;
+  const c = cli(p.clienteId), n = proximo(p), e = p.endereco || {}, f = D.config.fidelidade, tem = c && c.tel;
+  const wa = (k, t) => `<a class="btn w s" target="_blank" rel="noopener" href="${YK.waLink(msgCli[k](p), '55' + c.tel)}">${ic('msg')}${t}</a>`;
+  return { t: `Pedido #${p.num}`, b: `
+   <div class="row"><span class="tag k">${stN(p.status)}</span>${tempoTag(p)}<span class="tag">${CANAL[p.canal] || p.canal}</span><span class="tag">${p.tipo === 'entrega' ? 'Entrega' : 'Retirada'}</span></div>
+   ${n ? `<button class="btn p full" data-a="av" data-id="${p.id}">${n.t} ${ic('arrow')}</button>` : ''}
+   <div class="card stack" style="gap:8px"><h3>${esc(p.cliente.nome)}</h3>
+    ${tem ? `<p class="sub"><i>${telFmt(c.tel)}</i> · ${c.pedidos} pedido${c.pedidos === 1 ? '' : 's'} · ${c.selos} de ${f.meta} selos${YK.vouchersAtivos(D, c).length ? ' · tem voucher' : ''}</p>` : '<p class="sub">Sem telefone: este pedido não entra no cadastro de clientes.</p>'}
+    ${tem && c.obs ? `<div class="note">${ic('alert')}<span>Observação fixa do cliente: <b>${esc(c.obs)}</b></span></div>` : ''}
+    ${tem ? `<button class="btn s" data-a="ficha" data-id="${c.id}">${ic('users')}Abrir ficha do cliente</button>` : ''}</div>
+   <div class="card"><h3 style="margin-bottom:8px">Itens</h3><table class="tb">${p.itens.map(i => `<tr><td><b>${i.qtd}×</b> ${esc(i.tipo === 'yaki' ? tamN(i.tamanho) + ' ' + sabN(i.sabor) : i.nome)}${i.gratis ? ' <span class="tag g">Voucher fidelidade</span>' : ''}${i.obs ? `<br><span class="tag rl" style="white-space:normal">${esc(i.obs)}</span>` : ''}</td><td style="text-align:right;white-space:nowrap">${i.gratis ? 'grátis' : brl(i.preco * i.qtd)}</td></tr>`).join('')}
+    <tr><td>Subtotal</td><td style="text-align:right">${brl(p.subtotal)}</td></tr>${p.tipo === 'entrega' ? `<tr><td>Taxa de entrega</td><td style="text-align:right">${brl(p.taxa)}</td></tr>` : ''}
+    <tr><td><b>Total · ${esc(pagN(p.pagamento))}</b></td><td style="text-align:right" class="num">${brl(p.total)}</td></tr></table>
+    <div class="row" style="margin-top:10px">${pagTag(p)}${viaMP(p) ? `<span class="tag">taxa Mercado Pago ${brl(taxaMP(p))}</span>` : ''}${!isPago(p) && !/concluido|cancelado/.test(p.status) ? `<button class="btn s" data-a="pagOk" data-id="${p.id}">${ic('check')}Marcar como recebido</button>` : ''}</div>
+    ${p.obs ? `<div class="note" style="margin-top:10px">${ic('alert')}<span>${esc(p.obs)}</span></div>` : ''}</div>
+   ${p.tipo === 'entrega' ? `<div class="card stack" style="gap:6px"><h3>Entrega</h3><p><b>${esc([e.rua, e.numero, e.compl].filter(Boolean).join(', ') || 'Endereço não informado')}</b> · ${esc(e.bairro || '')}</p>${e.ref ? `<p class="sub">Referência: ${esc(e.ref)}</p>` : ''}
+    ${p.entregadorId ? `<p>Entregador: <b>${esc(entN(p.entregadorId))}</b> · repasse ${brl(p.repasse)}</p><button class="btn s" data-a="msgEnt" data-id="${p.id}">${ic('msg')}Reenviar mensagem ao entregador</button>` : '<p class="sub">Entregador é escolhido quando o pedido sai.</p>'}</div>` : ''}
+   ${tem ? `<div class="card stack" style="gap:8px"><h3>Avisar o cliente no WhatsApp</h3><div class="row">${wa('recebido', 'Recebemos seu pedido')}${p.tipo === 'entrega' ? wa('saiu', 'Saiu para entrega') : wa('retirada', 'Pronto para retirada')}</div></div>` : ''}
+   <div class="tl">${p.hist.map(h => `<span>${stN(h.s)} ${hm(h.t)}</span>`).join('<span>›</span>')}</div>
+   ${/concluido|cancelado/.test(p.status) ? '' : `<button class="btn d full" data-a="cancelar" data-id="${p.id}">Cancelar pedido</button>`}` };
+};
+A.cancelar = el => { const p = ped(el.dataset.id); if (!confirm(`Cancelar o pedido #${p.num}? O estoque e o voucher usados voltam.`)) return; YK.mudarStatus(p.id, 'cancelado'); closeM(); toast(`Pedido #${p.num} cancelado.`); };
+
+A.pagOk = el => { mut(d => { const p = d.pedidos.find(x => x.id === el.dataset.id); p.pago = true; p.pagoEm = new Date().toISOString(); }); if (M) renderM(); toast('Pagamento marcado como recebido.'); };
+
+/* novo pedido manual */
+A.novoPed = () => openM({ t: 'novo', canal: 'whatsapp', tel: '', nome: '', tipo: 'entrega', cep: '', bairro: '', taxa: '', rua: '', numero: '', compl: '', ref: '', itens: [], pag: 'pix', pago: false, troco: '', obs: '', tam: 'individual', sab: 'frango', q: 1, iobs: '', useV: false });
+const ultPed = c => c ? D.pedidos.find(p => p.clienteId === c.id && p.status !== 'cancelado') : null;
+A.npRep = () => { const u = ultPed(npCli()); if (!u) return; M.itens = u.itens.filter(i => !i.gratis).map(i => i.tipo === 'yaki' ? { tipo: 'yaki', tamanho: i.tamanho, sabor: i.sabor, qtd: i.qtd, obs: i.obs || '', preco: YK.preco(D, i.tamanho, i.sabor) || i.preco } : { tipo: 'extra', id: i.id, nome: i.nome, qtd: i.qtd, preco: (D.extras.find(x => x.id === i.id) || i).preco }); renderM(); toast('Itens do último pedido copiados, com os preços de hoje.'); };
+A.npCep = async () => {
+  const b = $('[data-a=npCep]'); if (b) b.disabled = true;
+  let r; try { r = await YK.cepInfo(M.cep); } catch (e) { r = { ok: false, erro: 'Não foi possível consultar o CEP agora' }; }
+  if (!M || M.t !== 'novo') return;
+  if (!r.ok) { if (b) b.disabled = false; return toast(r.erro || 'CEP não encontrado.'); }
+  if (r.rua) M.rua = r.rua; M.bairro = r.bairro || ''; M.taxa = r.naZona ? r.taxa : ''; M.fora = r.naZona ? '' : r.bairro; renderM();
+  toast(r.naZona ? `${r.bairro}: taxa de ${brl(r.taxa)} preenchida.` : `${r.bairro || 'Endereço'} está fora da tabela de bairros. Combine a taxa e digite ao lado.`, 6000);
+};
+const npCli = () => M.tel && YK.tel(M.tel).length >= 10 ? YK.clientePorTel(D, M.tel) : null;
+function npInfo() {
+  const c = npCli(), f = D.config.fidelidade; if (!c) return YK.tel(M.tel).length >= 10 ? '<span class="tag g">Cliente novo: será cadastrado</span>' : '';
+  const v = YK.vouchersAtivos(D, c).length;
+  return `<div class="note" style="background:var(--okbg);color:var(--ok)">${ic('check')}<span>${esc(c.nome)} · ${c.pedidos} pedidos · ${c.selos} de ${f.meta} selos${c.obs ? ` · <b>${esc(c.obs)}</b>` : ''}</span></div>` +
+    (v ? `<label class="row" style="min-height:44px;font-weight:700;margin-top:8px"><input type="checkbox" data-m="useV" ${M.useV ? 'checked' : ''} style="width:26px;height:26px"> Usar o voucher: 1 ${esc(tamN(f.premioTamanho))} grátis</label>` : '') +
+    (ultPed(c) ? `<button class="btn s full" style="margin-top:8px;white-space:normal;padding:8px 12px" data-a="npRep">${ic('reset')}Repetir o último: ${esc(resumoItens(ultPed(c)))}</button>` : '');
+}
+function npTot() {
+  const f = D.config.fidelidade; let free = M.useV && npCli() && YK.vouchersAtivos(D, npCli()).length ? 1 : 0, sub = 0;
+  M.itens.forEach(i => { let q = i.qtd; if (free && i.tipo === 'yaki' && i.tamanho === f.premioTamanho) { q--; free = 0; } sub += i.preco * q; });
+  const taxa = M.tipo === 'entrega' ? num(M.taxa) : 0; return { sub, taxa, total: sub + taxa };
+}
+MOD.novo = () => {
+  const t = npTot(), paus = k => D.pausados.includes(k) ? ' (pausado)' : '';
+  return { t: 'Novo pedido manual', b: `
+   ${fld('Por onde chegou?', segBtn('canal', [['whatsapp', 'WhatsApp'], ['balcao', 'Balcão'], ['ifood', 'iFood'], ['site', 'Telefone / site']], M.canal))}
+   ${M.canal === 'ifood' ? `<div class="note">${ic('alert')}<span>Pedido do iFood entra nos resultados, mas não ganha selo de fidelidade.</span></div>` : ''}
+   <div class="g2 m1">${fld('WhatsApp do cliente', inp('tel', '(71) 9 0000-0000', 'tel', 'data-n="ntel" inputmode="numeric" autocomplete="off"'))}${fld('Nome', inp('nome', 'Nome do cliente'))}</div>
+   <div id="npInfo">${npInfo()}</div>
+   ${fld('Como vai receber?', segBtn('tipo', [['entrega', 'Entrega'], ['retirada', 'Retirada']], M.tipo))}
+   ${M.tipo === 'entrega' ? `<div class="f"><span>CEP (preenche rua, bairro e taxa)</span><div class="row" style="flex-wrap:nowrap"><input type="text" data-m="cep" value="${esc(M.cep || '')}" placeholder="40150-000" inputmode="numeric" autocomplete="off" aria-label="CEP" style="flex:1;min-width:0"><button type="button" class="btn k" data-a="npCep">Buscar</button></div></div>
+    <div class="g2 m1">${fld('Bairro', `<select data-m="bairro" data-c="nbairro"><option value="">Escolha…</option>${M.fora ? `<option selected value="${esc(M.fora)}">${esc(M.fora)} · fora da tabela</option>` : ''}${D.bairros.map(b => `<option ${M.bairro === b.nome ? 'selected' : ''} value="${esc(b.nome)}">${esc(b.nome)} · ${brl(b.taxa)}</option>`).join('')}</select>`)}${fld('Taxa cobrada do cliente (R$)', inp('taxa', '0,00', 'text', 'inputmode="decimal" data-n="ntot"'))}</div>
+    <div class="g2 m1">${fld('Rua', inp('rua', 'Rua / avenida'))}<div class="g2">${fld('Número', inp('numero', ''))}${fld('Complemento', inp('compl', 'apto, bloco'))}</div></div>${fld('Ponto de referência', inp('ref', ''))}` : ''}
+   <div class="card stack" style="gap:10px"><h3>Itens</h3>
+    <div class="g2">${fld('Tamanho', `<select data-m="tam">${D.tamanhos.map(x => `<option ${M.tam === x.id ? 'selected' : ''} value="${x.id}">${x.nome}</option>`).join('')}</select>`)}${fld('Sabor', `<select data-m="sab">${D.sabores.map(x => `<option ${M.sab === x.id ? 'selected' : ''} value="${x.id}">${x.nome}${paus(M.tam + ':' + x.id)}</option>`).join('')}</select>`)}</div>
+    <div class="g2">${fld('Quantidade', inp('q', '1', 'number', 'min="1" inputmode="numeric"'))}${fld('Observação do item', inp('iobs', 'ex.: sem pimentão'))}</div>
+    <button class="btn k full" data-a="npAdd">${ic('plus')}Adicionar yakisoba</button>
+    <div class="chips">${D.extras.map(x => `<button class="chip" data-a="npExtra" data-id="${x.id}">${ic('plus')}${esc(x.nome)}${paus(x.id)}</button>`).join('')}</div>
+    ${M.itens.length ? `<table class="tb">${M.itens.map((i, k) => `<tr><td><b>${i.qtd}×</b> ${esc(i.tipo === 'yaki' ? tamN(i.tamanho) + ' ' + sabN(i.sabor) : i.nome)}${i.obs ? ` <span class="tag rl">${esc(i.obs)}</span>` : ''}</td><td style="text-align:right;white-space:nowrap">${brl(i.preco * i.qtd)}</td><td style="width:50px"><button class="x" data-a="npDel" data-k="${k}" aria-label="Remover">${ic('trash')}</button></td></tr>`).join('')}</table>` : '<div class="empty">Nenhum item ainda.</div>'}</div>
+   ${M.canal === 'ifood' ? `<p class="sub">Pagamento: feito no app do iFood.</p>` : `<div class="f"><span>Pagamento</span>${segBtn('pag', ['pix', 'dinheiro', 'cartao'].map(k => [k, pagN(k)]), M.pag)}</div>
+   ${M.pag === 'dinheiro' ? fld('Troco para (R$)', inp('troco', 'ex.: 100', 'text', 'inputmode="decimal"')) : ''}
+   <label class="row" style="min-height:44px;font-weight:700"><input type="checkbox" data-m="pago" ${M.pago ? 'checked' : ''} style="width:26px;height:26px"> ${M.pag === 'pix' ? 'Já recebi o Pix (comprovante conferido)' : 'Já está pago'}</label>`}
+   ${fld('Observação do pedido', inp('obs', ''))}
+   <div class="card row" id="npTot" style="justify-content:space-between"><span>Subtotal ${brl(t.sub)}${M.tipo === 'entrega' ? ' + entrega ' + brl(t.taxa) : ''}</span><b class="num" style="font-size:24px">${brl(t.total)}</b></div>
+   <button class="btn p full" data-a="npOk">${ic('check')}Lançar pedido</button>` };
+};
+IN.ntel = () => { const c = npCli(); if (c) { M.nome = c.nome; const n = $('[data-m=nome]'); if (n) n.value = c.nome; if (!M.bairro && c.bairro && M.tipo === 'entrega') { M.bairro = c.bairro; M.taxa = (D.bairros.find(b => b.nome === c.bairro) || {}).taxa || ''; const pt = (c.endereco || '').split(',').map(x => x.trim()); M.rua = pt[0] || ''; M.numero = pt[1] || ''; M.compl = pt.slice(2).join(', '); return renderM(); } } else M.useV = false; $('#npInfo').innerHTML = npInfo(); };
+IN.ntot = () => { const t = npTot(), el = $('#npTot'); if (el) el.innerHTML = `<span>Subtotal ${brl(t.sub)} + entrega ${brl(t.taxa)}</span><b class="num" style="font-size:24px">${brl(t.total)}</b>`; };
+CH.nbairro = () => { const b = D.bairros.find(x => x.nome === M.bairro); if (M.bairro !== M.fora) M.fora = ''; M.taxa = b ? b.taxa : ''; renderM(); };
+A.npAdd = () => { const q = Math.max(1, Math.round(num(M.q))); M.itens.push({ tipo: 'yaki', tamanho: M.tam, sabor: M.sab, qtd: q, obs: (M.iobs || '').trim(), preco: YK.preco(D, M.tam, M.sab) }); M.q = 1; M.iobs = ''; renderM(); };
+A.npExtra = el => { const x = D.extras.find(e => e.id === el.dataset.id), j = M.itens.find(i => i.id === x.id); if (j) j.qtd++; else M.itens.push({ tipo: 'extra', id: x.id, nome: x.nome, qtd: 1, preco: x.preco }); renderM(); };
+A.npDel = el => { M.itens.splice(+el.dataset.k, 1); renderM(); };
+A.npOk = () => {
+  const f = D.config.fidelidade, c = npCli();
+  if (!M.nome.trim()) return toast('Falta o nome do cliente.');
+  if (!M.itens.length) return toast('Adicione pelo menos um item.');
+  if (M.tipo === 'entrega' && !M.bairro) return toast('Escolha o bairro da entrega.');
+  const t = YK.tel(M.tel); if (t && t.length < 10) return toast('Telefone incompleto. Confira ou deixe em branco.');
+  let itens = M.itens.map(i => Object.assign({}, i)), vid = null;
+  if (M.useV && c) {
+    const v = YK.vouchersAtivos(D, c)[0], k = itens.findIndex(i => i.tipo === 'yaki' && i.tamanho === f.premioTamanho);
+    if (v && k < 0) return toast(`Para usar o voucher, adicione 1 ${tamN(f.premioTamanho)}.`);
+    if (v) { vid = v.id; if (itens[k].qtd > 1) { itens[k].qtd--; itens.splice(k + 1, 0, Object.assign({}, itens[k], { qtd: 1, gratis: true })); } else itens[k].gratis = true; }
+  }
+  silent = true;
+  const p = YK.criarPedido({ canal: M.canal, cliente: { nome: M.nome.trim(), tel: t }, tipo: M.tipo, endereco: M.tipo === 'entrega' ? { bairro: M.bairro, rua: M.rua.trim(), numero: M.numero.trim(), compl: M.compl.trim(), ref: M.ref.trim() } : null, taxa: M.tipo === 'entrega' ? num(M.taxa) : 0, itens, pagamento: M.pag, pago: M.canal === 'ifood' || !!M.pago, pagoEm: M.canal === 'ifood' || M.pago ? new Date().toISOString() : null, troco: M.pag === 'dinheiro' ? num(M.troco) : 0, voucherId: vid, obs: M.obs.trim() });
+  silent = false; S.fresh.add(p.id); S.col = 'novo'; closeM(); if (S.view !== 'pedidos') go('pedidos'); else render();
+  toast(`Pedido #${p.num} lançado` + (t ? (p.canal === 'ifood' ? '.' : '. Vai valer selo quando for concluído.') : ' (sem telefone, fora do cadastro).'));
+};
+
+/* ============ 2. ENTREGAS ============ */
+function msgEnt(p, e, rep) {
+  const en = p.endereco || {}, c = cli(p.clienteId);
+  const cobrar = isPago(p) ? `JÁ PAGO (${pagN(p.pagamento)}). Não cobrar nada.` : p.pagamento === 'cartao' ? `COBRAR ${brl(p.total)} na MAQUININHA (levar a maquininha).` : p.pagamento === 'dinheiro' ? `COBRAR ${brl(p.total)} em DINHEIRO.` + (p.troco > p.total ? ` Levar troco de ${brl(p.troco - p.total)} (cliente paga com ${brl(p.troco)}).` : '') : `COBRAR ${brl(p.total)} no ${pagN(p.pagamento)}: só entregar depois de ver o comprovante.`;
+  return `*Entrega Y-AKIO · pedido #${p.num}*\n\nCliente: ${p.cliente.nome}${c && c.tel ? ' · ' + telFmt(c.tel) : ''}\nEndereço: ${[en.rua, en.numero, en.compl].filter(Boolean).join(', ') || '(confirmar)'} · ${en.bairro || ''}${en.ref ? '\nReferência: ' + en.ref : ''}\n\n${cobrar}\n\nSeu repasse nesta corrida: ${brl(rep)}\nRetirar na ${YK.LOJA.endereco}.`;
+}
+function openSaida(id) {
+  const p = ped(id), b = D.bairros.find(x => x.nome === (p.endereco || {}).bairro), at = D.entregadores.filter(e => e.ativo);
+  openM({ t: 'saida', id, ent: p.entregadorId || (p.canal === 'ifood' ? (at.find(e => e.ifood) || at[0] || {}).id : (at.find(e => !e.ifood) || at[0] || {}).id) || '', rep: String(p.repasse || (b ? b.taxa : p.taxa) || 0), rastreio: p.rastreio || '' });
+}
+MOD.saida = () => {
+  const p = ped(M.id); if (!p) return null;
+  const at = D.entregadores.filter(e => e.ativo), e = D.entregadores.find(x => x.id === M.ent) || {}, dif = p.taxa - num(M.rep);
+  return { t: `Saída do pedido #${p.num}`, b: `
+   <p><b>${esc(p.cliente.nome)}</b> · ${esc((p.endereco || {}).bairro || '')} · cliente pagou ${brl(p.taxa)} de taxa</p>
+   ${fld('Quem vai levar?', at.length ? `<div class="chips">${at.map(x => `<button class="chip ${M.ent === x.id ? 'on' : ''}" data-a="mset" data-k="ent" data-v="${x.id}">${esc(x.nome)}</button>`).join('')}</div>` : '<div class="empty">Nenhum entregador ativo. Cadastre em Entregas.</div>')}
+   ${fld('Quanto você vai pagar por esta corrida (R$)', inp('rep', '0,00', 'text', 'inputmode="decimal" data-n="saimsg"'))}
+   <div id="saiDif">${saiDif(dif)}</div>
+   ${e.ifood ? `<div class="note">${ic('alert')}<span>Peça o motoboy no app do iFood e cole aqui o link de rastreio para mandar ao cliente.</span></div>${fld('Link de rastreio (opcional)', inp('rastreio', 'https://…'))}` :
+    `${fld('Mensagem pronta para o entregador', `<textarea id="saiMsg" rows="9">${esc(msgEnt(p, e, num(M.rep)))}</textarea>`)}`}
+   ${e.tel ? `<button class="btn w full" data-a="saiOk" data-wa="1">${ic('msg')}Confirmar saída e abrir WhatsApp do entregador</button>` : ''}
+   <button class="btn ${e.tel ? '' : 'p'} full" data-a="saiOk">${ic('check')}${e.tel ? 'Só confirmar a saída' : 'Confirmar saída'}</button>` };
+};
+const saiDif = dif => dif < 0 ? `<div class="note" style="background:var(--redbg);color:var(--redd)">${ic('alert')}<span>Você paga ${brl(-dif)} a mais do que cobrou do cliente nesta entrega.</span></div>` : `<span class="tag g">${dif > 0 ? 'Sobra ' + brl(dif) + ' de frete' : 'Frete empata: cliente paga o repasse'}</span>`;
+IN.saimsg = () => { const p = ped(M.id), e = D.entregadores.find(x => x.id === M.ent) || {}, t = $('#saiMsg'); if (t) t.value = msgEnt(p, e, num(M.rep)); $('#saiDif').innerHTML = saiDif(p.taxa - num(M.rep)); };
+A.saiOk = el => {
+  const p = ped(M.id), e = D.entregadores.find(x => x.id === M.ent); if (!e) return toast('Escolha quem vai levar.');
+  const txt = ($('#saiMsg') || {}).value || msgEnt(p, e, num(M.rep));
+  if (el.dataset.wa && e.tel) window.open(YK.waLink(txt, e.tel), '_blank', 'noopener');
+  YK.mudarStatus(p.id, 'rota', { entregadorId: e.id, repasse: num(M.rep), rastreio: (M.rastreio || '').trim() });
+  const rep = num(M.rep); S.fresh.delete(p.id); closeM(); toast(`#${p.num} saiu com ${e.nome}. Repasse ${brl(rep)}.`);
+};
+A.msgEnt = el => { const p = ped(el.dataset.id), e = D.entregadores.find(x => x.id === p.entregadorId) || {}; openM({ t: 'txt', titulo: 'Mensagem ao entregador', txt: msgEnt(p, e, p.repasse), tel: e.tel || '' }); };
+MOD.txt = () => ({ t: M.titulo, b: `<textarea id="txtM" rows="11" data-m="txt">${esc(M.txt)}</textarea><div class="row"><button class="btn w" data-a="txtWa">${ic('msg')}Abrir no WhatsApp</button><button class="btn" data-a="copy" data-from="#txtM">${ic('copy')}Copiar</button></div>` });
+A.txtWa = () => window.open(M.tel ? YK.waLink(M.txt, M.tel) : 'https://wa.me/?text=' + encodeURIComponent(M.txt), '_blank', 'noopener');
+
+const corridas = per => { const ini = per === 'hoje' ? sod() : per === 'ontem' ? sod() - DIA : sod() - 6 * DIA, fim = per === 'ontem' ? sod() : Infinity; return D.pedidos.filter(p => p.tipo === 'entrega' && p.entregadorId && /rota|concluido/.test(p.status) && +new Date(p.criado) >= ini && +new Date(p.criado) < fim); };
+V.entregas = () => {
+  const tabs = `<div class="chips" style="margin-bottom:14px">${[['acerto', 'Acerto'], ['bairros', 'Bairros e taxas'], ['pessoas', 'Entregadores']].map(([v, t]) => `<button class="chip ${S.ent === v ? 'on' : ''}" data-a="sset" data-k="ent" data-v="${v}">${t}</button>`).join('')}</div>`;
+  let h = hd('Entregas', 'Quem levou, quanto você paga a cada um e se o frete está dando lucro ou prejuízo.') + tabs;
+  if (S.ent === 'acerto') {
+    const esp = D.pedidos.filter(p => p.status === 'pronto' && p.tipo === 'entrega'), rua = D.pedidos.filter(p => p.status === 'rota');
+    if (esp.length || rua.length) h += `<div class="cols2" style="margin-bottom:16px"><div class="card stack" style="gap:8px"><h3>Prontos esperando entregador (${esp.length})</h3>${esp.map(p => `<div class="row" style="justify-content:space-between"><span><b>#${p.num}</b> ${esc(p.cliente.nome)} · ${esc((p.endereco || {}).bairro || '')}</span><button class="btn p s" data-a="av" data-id="${p.id}">Despachar ${ic('arrow')}</button></div>`).join('') || '<p class="sub">Nenhum.</p>'}</div>
+     <div class="card stack" style="gap:8px"><h3>Na rua agora (${rua.length})</h3>${rua.map(p => `<div class="row" style="justify-content:space-between"><span><b>#${p.num}</b> ${esc(p.cliente.nome)} · ${esc(entN(p.entregadorId))} · há ${dur(desde(p, 'rota'))}</span><span class="row"><button class="btn s" data-a="msgEnt" data-id="${p.id}" aria-label="Mensagem ao entregador">${ic('msg')}</button><button class="btn p s" data-a="av" data-id="${p.id}">Entregue</button></span></div>`).join('') || '<p class="sub">Ninguém na rua.</p>'}</div></div>`;
+    const cs = corridas(S.entPer), cob = sum(cs, p => p.taxa), rep = sum(cs, p => p.repasse), pend = sum(cs.filter(p => !p.repassePago), p => p.repasse), sal = cob - rep;
+    h += `<div class="row" style="margin-bottom:12px"><h2>Acerto</h2>${segBtn('entPer', [['hoje', 'Hoje'], ['ontem', 'Ontem'], ['7', '7 dias']], S.entPer, 'sset')}</div>
+     <div class="kp" style="margin-bottom:14px"><div class="k"><small>Corridas</small><b>${cs.length}</b></div><div class="k"><small>Taxa cobrada dos clientes</small><b>${brl(cob)}</b></div><div class="k"><small>Falta pagar aos entregadores</small><b>${brl(pend)}</b><em>${brl(rep - pend)} já pagos de ${brl(rep)}</em></div>
+     <div class="k ${sal < 0 ? 'neg' : 'pos'}"><small>${sal < 0 ? 'Prejuízo de frete' : 'Sobra de frete'}</small><b>${brl(Math.abs(sal))}</b><em>${sal < 0 ? 'você está pagando parte da entrega' : 'o cliente cobre a entrega'}</em></div></div>`;
+    const por = D.entregadores.map(e => ({ e, l: cs.filter(p => p.entregadorId === e.id) })).filter(x => x.l.length);
+    h += por.length ? `<div class="stack">${por.map(({ e, l }) => {
+      const tot = sum(l, p => p.repasse), tc = sum(l, p => p.taxa), ab = l.filter(p => !p.repassePago), dev = sum(ab, p => p.repasse), lt = ab.length ? ab : l;
+      const txt = `Acerto Y-AKIO · ${S.entPer === '7' ? 'últimos 7 dias' : S.entPer}\n${e.nome}\n\n${lt.map(p => `${dm(p.criado)} #${p.num} · ${(p.endereco || {}).bairro || ''} · ${brl(p.repasse)}`).join('\n')}\n\n${lt.length} corrida${lt.length > 1 ? 's' : ''} · ${ab.length ? 'A receber' : 'Total já pago'}: ${brl(ab.length ? dev : tot)}`;
+      return `<div class="card stack" style="gap:10px"><div class="row" style="justify-content:space-between"><div><h3>${esc(e.nome)}</h3><p class="sub">${l.length} corrida${l.length > 1 ? 's' : ''} · cobrado dos clientes ${brl(tc)} · <b style="color:${tc - tot < 0 ? 'var(--redd)' : 'var(--ok)'}">${tc - tot < 0 ? 'prejuízo ' : 'sobra '}${brl(Math.abs(tc - tot))}</b></p></div><div style="text-align:right"><small class="sub">${dev ? 'falta pagar' : 'tudo pago'}</small><div class="num" style="font-size:26px;color:${dev ? 'inherit' : 'var(--ok)'}">${brl(dev || tot)}</div></div></div>
+       <div class="tw"><table class="tb"><tr><th>Pedido</th><th>Bairro</th><th>Cliente pagou</th><th>Repasse</th></tr>${l.map(p => `<tr><td><b>#${p.num}</b> ${dm(p.criado)} ${hm(p.criado)}</td><td>${esc((p.endereco || {}).bairro || '')}</td><td>${brl(p.taxa)}</td><td><b>${brl(p.repasse)}</b>${p.repasse > p.taxa ? ' <span class="tag rl">−' + brl(p.repasse - p.taxa).slice(3) + '</span>' : ''}${p.repassePago ? ' <span class="tag g">pago ' + dm(p.repassePago) + '</span>' : ''}</td></tr>`).join('')}</table></div>
+       <div class="row">${e.tel ? `<a class="btn w s" target="_blank" rel="noopener" href="${YK.waLink(txt, e.tel)}">${ic('msg')}Enviar acerto no WhatsApp</a>` : ''}<button class="btn s" data-a="copy" data-t="${esc(txt)}">${ic('copy')}Copiar</button>${dev ? `<button class="btn k s" data-a="repPago" data-e="${e.id}" data-v="1">${ic('check')}Marcar ${brl(dev)} como pago</button>` : `<button class="btn s" data-a="repPago" data-e="${e.id}" data-v="">Desfazer pagamento</button>`}</div></div>`;
+    }).join('')}</div>` : '<div class="empty">Nenhuma corrida neste período.</div>';
+  } else if (S.ent === 'bairros') {
+    h += `<div class="card"><div class="note" style="margin-bottom:12px">${ic('alert')}<span>Taxas de exemplo. O que você mudar aqui vale no site na mesma hora.</span></div><div class="tw"><table class="tb"><tr><th>Bairro</th><th>Taxa (R$)</th><th>Pedido mínimo (R$)</th><th></th></tr>
+     ${D.bairros.map((b, i) => `<tr><td style="min-width:150px"><input type="text" value="${esc(b.nome)}" data-c="bairro" data-i="${i}" data-k="nome" aria-label="Bairro"></td><td style="min-width:96px"><input type="text" inputmode="decimal" value="${b.taxa}" data-c="bairro" data-i="${i}" data-k="taxa" aria-label="Taxa"></td><td style="min-width:96px"><input type="text" inputmode="decimal" value="${b.min}" data-c="bairro" data-i="${i}" data-k="min" aria-label="Pedido mínimo"></td><td><button class="x" data-a="bairroDel" data-i="${i}" aria-label="Remover ${esc(b.nome)}">${ic('trash')}</button></td></tr>`).join('')}</table></div>
+     <button class="btn k" style="margin-top:12px" data-a="bairroAdd">${ic('plus')}Adicionar bairro</button></div>`;
+  } else {
+    h += `<div class="stack">${D.entregadores.map((e, i) => `<div class="card"><div class="g3"><label class="f"><span>Nome</span><input type="text" value="${esc(e.nome)}" data-c="entreg" data-i="${i}" data-k="nome"></label><label class="f"><span>WhatsApp (com DDD)</span><input type="tel" value="${esc(telFmt(e.tel))}" data-c="entreg" data-i="${i}" data-k="tel" ${e.ifood ? 'disabled placeholder="pelo app do iFood"' : ''}></label>
+      <div class="f"><span>Situação</span><button class="sw ${e.ativo ? '' : 'off'}" data-a="entTog" data-i="${i}">${e.ativo ? 'Ativo' : 'Inativo'}</button></div></div></div>`).join('')}
+      <button class="btn k" data-a="entAdd" style="align-self:flex-start">${ic('plus')}Cadastrar entregador</button></div>`;
+  }
+  return h;
+};
+CH.bairro = el => mut(d => { const b = d.bairros[+el.dataset.i], k = el.dataset.k; b[k] = k === 'nome' ? el.value.trim() || b.nome : num(el.value); });
+A.bairroAdd = () => { mut(d => d.bairros.push({ nome: 'Novo bairro', taxa: 10, min: 30 })); toast('Bairro adicionado no fim da lista. Ajuste o nome e a taxa.'); };
+A.bairroDel = el => { if (confirm('Remover este bairro da área de entrega?')) mut(d => d.bairros.splice(+el.dataset.i, 1)); };
+CH.entreg = el => mut(d => { const e = d.entregadores[+el.dataset.i], k = el.dataset.k; if (k === 'tel') { const t = YK.tel(el.value); e.tel = t ? '55' + t : ''; } else e.nome = el.value.trim() || e.nome; });
+A.entTog = el => mut(d => { const e = d.entregadores[+el.dataset.i]; e.ativo = !e.ativo; });
+A.repPago = el => { const ids = corridas(S.entPer).filter(p => p.entregadorId === el.dataset.e && (el.dataset.v ? !p.repassePago : p.repassePago)).map(p => p.id), t = new Date().toISOString(); mut(d => d.pedidos.forEach(p => { if (ids.includes(p.id)) p.repassePago = el.dataset.v ? t : null; })); toast(el.dataset.v ? 'Acerto marcado como pago.' : 'Pagamento desfeito.'); };
+A.entAdd = () => mut(d => d.entregadores.push({ id: YK.uid('e'), nome: 'Novo entregador', tel: '', ativo: true }));
+
+/* ============ 3. CLIENTES (CRM) ============ */
+const reais = () => D.clientes.filter(c => c.tel);
+const isVip = c => c.gasto >= 1000 || c.pedidos >= 20;
+const ticket = c => c.pedidos ? c.gasto / c.pedidos : 0;
+const SEG = {
+  todos: ['Todos', 'Todo mundo que já pediu com telefone.', 'Mandar mensagem'],
+  novos: ['Novos', 'Até 2 pedidos e chegaram há pouco. Hora de apresentar o cartão fidelidade para virar hábito.', 'Dar boas-vindas'],
+  frequentes: ['Frequentes', '5 pedidos ou mais e pediram nos últimos 30 dias. São a base do seu mês.', 'Agradecer'],
+  vip: ['VIP', 'Quem mais gastou na casa (R$ 1.000+ ou 20+ pedidos). Merecem mimo e aviso de novidade antes de todo mundo.', 'Mandar mimo'],
+  sumidos: ['Sumidos 30+ dias', 'Já foram clientes e pararam de pedir há mais de 30 dias. Uma mensagem costuma trazer de volta.', 'Chamar de volta'],
+  quase: ['Falta 1 ou 2 selos', 'Estão quase completando o cartão. É o empurrão mais fácil para um novo pedido.', 'Avisar que falta pouco'],
+  voucher: ['Voucher parado', 'Ganharam o yakisoba grátis e ainda não usaram. Quem vem buscar o prêmio costuma pedir mais coisa junto.', 'Lembrar do prêmio'],
+};
+function segs() {
+  const cs = reais(), meta = D.config.fidelidade.meta;
+  return { todos: cs, novos: cs.filter(c => c.pedidos <= 2 && dias(c.ultimo || c.primeiro) <= 30), frequentes: cs.filter(c => c.pedidos >= 5 && dias(c.ultimo) <= 30 && !isVip(c)), vip: cs.filter(isVip),
+    sumidos: cs.filter(c => c.ultimo && dias(c.ultimo) > 30), quase: cs.filter(c => meta - c.selos >= 1 && meta - c.selos <= 2), voucher: cs.filter(c => YK.vouchersAtivos(D, c).length) };
+}
+function segDe(c) { const s = segs(); return ['voucher', 'quase', 'sumidos', 'novos', 'vip', 'frequentes'].find(k => s[k].includes(c)) || 'todos'; }
+function msgSeg(seg, c) {
+  const f = D.config.fidelidade, n = pnome(c.nome), falta = f.meta - c.selos;
+  if (seg === 'sumidos') return `Oi, ${n}! Aqui é a Catarina, do Y-AKIO. Faz ${dias(c.ultimo)} dias que você não pede seu yakisoba e a gente sentiu sua falta.${c.selos ? ` Você já tem ${c.selos} de ${f.meta} selos no cartão fidelidade, não deixa parar!` : ''} ${viaSite()}`;
+  if (seg === 'quase') return `Oi, ${n}! Falta só ${falta} selo${falta > 1 ? 's' : ''} para você ganhar 1 ${f.premio} grátis no Y-AKIO. ${falta === 1 ? 'Seu próximo pedido já completa o cartão.' : 'Mais dois pedidos e o prêmio é seu.'} ${viaSite()}`;
+  if (seg === 'voucher') { const v = YK.vouchersAtivos(D, c)[0], ate = v ? new Date(+new Date(v.criado) + f.validadeDias * DIA) : null; return `Oi, ${n}! Seu ${f.premio} grátis está esperando por você no Y-AKIO.${ate ? ' Vale até ' + dm(ate) + '.' : ''} É só fazer seu pedido e usar o voucher. ${viaSite()}`; }
+  if (seg === 'novos') return `Oi, ${n}! Aqui é a Catarina, do Y-AKIO. Obrigada por pedir com a gente! Você já começou seu cartão fidelidade: cada pedido pelo site ou WhatsApp vale 1 selo, e com ${f.meta} selos você ganha 1 ${f.premio}. ${viaSite()}`;
+  if (seg === 'vip' || seg === 'frequentes') return `Oi, ${n}! Aqui é a Catarina, do Y-AKIO. Passando para agradecer: você é cliente da casa e isso faz toda a diferença pra gente. No seu próximo pedido, avisa que eu capricho. ${viaSite()}`;
+  return `Oi, ${n}! Aqui é a Catarina, do Y-AKIO. `;
+}
+const waCli = (c, seg, cls, txt) => `<a class="btn w s ${cls || ''}" target="_blank" rel="noopener" data-a="sent" data-id="${c.id}" href="${YK.waLink(msgSeg(seg, c), '55' + c.tel)}">${ic(S.sent.has(c.id) ? 'check' : 'msg')}${txt || (S.sent.has(c.id) ? 'Enviado' : 'WhatsApp')}</a>`;
+A.sent = el => { S.sent.add(el.dataset.id); setTimeout(() => { if (M && M.t === 'camp') renderM(); else if (S.view === 'clientes' && !M) cliList(); }, 300); };
+const dots = c => { const m = D.config.fidelidade.meta; return `<span class="dots" aria-label="${c.selos} de ${m} selos">${Array.from({ length: m }, (_, i) => `<i class="${i < c.selos ? 'on' : ''}"></i>`).join('')}</span>`; };
+function cliRows() {
+  const q = S.q.trim().toLowerCase(), qd = q.replace(/\D/g, '');
+  let l = segs()[S.seg].filter(c => !q || c.nome.toLowerCase().includes(q) || (c.bairro || '').toLowerCase().includes(q) || (qd.length > 2 && c.tel.includes(qd)));
+  const o = S.ord; l = l.slice().sort((a, b) => o === 'gasto' ? b.gasto - a.gasto : o === 'pedidos' ? b.pedidos - a.pedidos : o === 'nome' ? a.nome.localeCompare(b.nome) : new Date(b.ultimo || 0) - new Date(a.ultimo || 0));
+  const f = D.config.fidelidade;
+  return l.length ? l.map(c => `<div class="li cli" data-a="ficha" data-id="${c.id}" role="button" tabindex="0">
+    <div class="nm"><div class="v" style="font-size:18px">${esc(c.nome)}</div><div class="row" style="gap:5px;margin-top:3px"><span class="tag">${esc(c.bairro || 'sem bairro')}</span>${isVip(c) ? '<span class="tag k">VIP</span>' : ''}${YK.vouchersAtivos(D, c).length ? '<span class="tag g">Voucher</span>' : ''}<span class="tag ${f.meta - c.selos <= 2 ? 'r' : ''}">${c.selos}/${f.meta} selos</span>${c.obs ? `<span class="tag y" style="white-space:normal">${esc(c.obs)}</span>` : ''}</div></div>
+    <div><small>Pedidos</small><span class="v">${c.pedidos}</span></div><div><small>Gasto total</small><span class="v">${brl(c.gasto)}</span></div><div><small>Ticket médio</small><span class="v">${brl(ticket(c))}</span></div>
+    <div><small>Último pedido</small><span class="v" ${dias(c.ultimo) > 30 && c.ultimo ? 'style="color:var(--redd)"' : ''}>${quando(c.ultimo)}</span></div>
+    <div class="ac">${waCli(c, S.seg === 'todos' ? segDe(c) : S.seg, 'full')}</div></div>`).join('') : '<div class="empty">Ninguém aqui com esse filtro.</div>';
+}
+function cliList() { const el = $('#cliL'); if (el) el.innerHTML = cliRows(); }
+V.clientes = () => {
+  const s = segs(), cs = s.todos, sg = SEG[S.seg], n = s[S.seg].length;
+  return hd('Clientes', `${cs.length} clientes com telefone · ${brl(sum(cs, c => c.gasto))} já gastos na casa. Cada pedido do site ou lançado no painel entra aqui sozinho.`) +
+    `<div class="chips" style="margin-bottom:12px">${Object.keys(SEG).map(k => `<button class="chip ${S.seg === k ? 'on' : ''}" data-a="sset" data-k="seg" data-v="${k}">${SEG[k][0]}<b>${s[k].length}</b></button>`).join('')}</div>
+    ${S.seg !== 'todos' ? `<div class="card row" style="margin-bottom:12px;justify-content:space-between"><p style="flex:1;min-width:220px"><b>${sg[0]}:</b> ${sg[1]}</p>${n ? `<button class="btn p" data-a="camp">${ic('msg')}${sg[2]} (${n})</button>` : ''}</div>` : ''}
+    <div class="g2 m1" style="margin-bottom:12px"><input type="search" placeholder="Buscar por nome, telefone ou bairro" value="${esc(S.q)}" data-n="cq" aria-label="Buscar cliente"><select data-c="cord" aria-label="Ordenar">${[['ultimo', 'Ordenar: pediu mais recentemente'], ['gasto', 'Ordenar: quem mais gastou'], ['pedidos', 'Ordenar: mais pedidos'], ['nome', 'Ordenar: nome']].map(([v, t]) => `<option value="${v}" ${S.ord === v ? 'selected' : ''}>${t}</option>`).join('')}</select></div>
+    <div class="lst" id="cliL">${cliRows()}</div>`;
+};
+IN.cq = el => { S.q = el.value; cliList(); };
+CH.cord = el => { S.ord = el.value; cliList(); };
+A.camp = () => openM({ t: 'camp', seg: S.seg });
+MOD.camp = () => {
+  const l = segs()[M.seg], sg = SEG[M.seg], feitos = l.filter(c => S.sent.has(c.id)).length;
+  return { t: sg[2], wide: true, b: `<p>O WhatsApp abre com a mensagem pronta e com o nome de cada pessoa. É só tocar em enviar, um por um. <b>${feitos} de ${l.length} enviados.</b></p>
+   ${l[0] ? `<div class="card"><small class="sub">Exemplo da mensagem</small><p style="white-space:pre-wrap;margin-top:4px">${esc(msgSeg(M.seg, l[0]))}</p></div>` : ''}
+   <div class="lst">${l.map(c => `<div class="li" style="grid-template-columns:minmax(0,1fr) auto"><div><b>${esc(c.nome)}</b><small>${telFmt(c.tel)} · último pedido ${quando(c.ultimo)} · ${c.selos} selos</small></div>${waCli(c, M.seg)}</div>`).join('')}</div>` };
+};
+A.ficha = el => openM({ t: 'cli', cid: el.dataset.id });
+MOD.cli = () => {
+  const c = cli(M.cid); if (!c) return null;
+  const f = D.config.fidelidade, vs = YK.vouchersAtivos(D, c), hist = D.pedidos.filter(p => p.clienteId === c.id), sg = segDe(c), fav = {};
+  hist.forEach(p => p.itens.forEach(i => { if (i.tipo === 'yaki') { const k = tamN(i.tamanho) + ' ' + sabN(i.sabor); fav[k] = (fav[k] || 0) + i.qtd; } }));
+  const top = Object.entries(fav).sort((a, b) => b[1] - a[1])[0];
+  return { t: esc(c.nome), wide: true, b: `
+   <div class="row"><span class="tag"><i>${telFmt(c.tel)}</i></span><span class="tag">${esc(c.bairro || 'sem bairro')}</span>${isVip(c) ? '<span class="tag k">VIP</span>' : ''}${sg !== 'todos' ? `<span class="tag y">${SEG[sg][0]}</span>` : ''}<span class="tag">cliente desde ${dm(c.primeiro)}/${new Date(c.primeiro).getFullYear()}</span></div>
+   <div class="kp"><div class="k"><small>Pedidos</small><b>${c.pedidos}</b></div><div class="k"><small>Gasto total</small><b>${brl(c.gasto)}</b></div><div class="k"><small>Ticket médio</small><b>${brl(ticket(c))}</b></div><div class="k ${dias(c.ultimo) > 30 && c.ultimo ? 'neg' : ''}"><small>Último pedido</small><b>${quando(c.ultimo)}</b></div></div>
+   ${c.endereco ? `<p>${ic('pin')} ${esc(c.endereco)} · ${esc(c.bairro)}</p>` : ''}${top ? `<p>Pedido preferido: <b>${esc(top[0])}</b></p>` : ''}
+   ${fld('Observação fixa (aparece em todo pedido dele)', `<textarea data-c="cobs" data-id="${c.id}" rows="2" placeholder="ex.: sem pimentão, alergia a camarão, entregar na portaria">${esc(c.obs || '')}</textarea>`)}
+   <div class="card stack" style="gap:10px"><h3>Cartão fidelidade · ${c.selos} de ${f.meta}</h3>${dots(c)}
+    ${vs.length ? `<div class="note" style="background:var(--okbg);color:var(--ok)">${ic('award')}<span>Tem ${vs.length} voucher${vs.length > 1 ? 's' : ''} de ${esc(vs[0].premio)} para usar (ganhou em ${dm(vs[0].criado)}).</span></div>` : ''}
+    <p class="sub">${c.cartoesCompletos} cartão(ões) completo(s) até hoje.</p>
+    <div class="row"><button class="btn k s" data-a="selo" data-id="${c.id}">${ic('plus')}Carimbar 1 selo</button><button class="btn s" data-a="arte" data-id="${c.id}">${ic('award')}Gerar arte do cartão</button></div></div>
+   <div class="row">${waCli(c, sg, '', sg === 'todos' ? 'Abrir WhatsApp' : SEG[sg][2] + ' no WhatsApp')}</div>
+   <div class="card"><h3 style="margin-bottom:6px">Histórico no sistema (${hist.length})</h3>${hist.length ? `<div class="tw"><table class="tb">${hist.slice(0, 15).map(p => `<tr><td><b>#${p.num}</b> ${dm(p.criado)}</td><td>${esc(resumoItens(p))}</td><td><span class="tag">${CANAL[p.canal]}</span></td><td style="text-align:right;white-space:nowrap"><b>${brl(p.total)}</b></td></tr>`).join('')}</table></div>` : '<p class="sub">Os pedidos anteriores ao sistema estão só no total acima.</p>'}</div>` };
+};
+CH.cobs = el => { mut(d => { d.clientes.find(c => c.id === el.dataset.id).obs = el.value.trim(); }); toast('Observação salva.'); };
+function carimbar(id, motivo) {
+  const g = mut(d => YK.darSelo(d, d.clientes.find(c => c.id === id), motivo || 'Carimbo manual no painel')), c = cli(id), f = D.config.fidelidade;
+  toast(g ? `${pnome(c.nome)} completou o cartão e ganhou 1 ${f.premio}!` : `Selo carimbado. ${pnome(c.nome)} tem ${c.selos} de ${f.meta}.`, 5000);
+}
+A.selo = el => { carimbar(el.dataset.id); if (M) renderM(); };
+
+/* ============ 4. FIDELIDADE ============ */
+const custoPed = p => Object.entries(YK.consumo(D, p)).reduce((s, [k, q]) => s + q * ((D.estoque.find(e => e.id === k) || {}).custo || 0), 0);
+const custoYaki = (tam, sab) => custoPed({ itens: [{ tipo: 'yaki', tamanho: tam, sabor: sab, qtd: 1 }] });
+V.fidelidade = () => {
+  const f = D.config.fidelidade, cs = reais(), and = cs.filter(c => c.selos > 0), comp = sum(cs, c => c.cartoesCompletos), vs = cs.flatMap(c => c.vouchers), at = sum(cs, c => YK.vouchersAtivos(D, c).length), us = vs.filter(v => v.usado).length;
+  const cp = sum(D.sabores, s => custoYaki(f.premioTamanho, s.id)) / (D.sabores.length || 1), custo = comp * cp, fieis = cs.filter(c => c.selos > 0 || c.cartoesCompletos > 0), rec = sum(fieis, c => c.gasto);
+  return hd('Fidelidade', `${f.meta} selos = 1 ${esc(f.premio)}. O selo entra sozinho quando o pedido é concluído. O cliente vê o cartão no site digitando o telefone.`) + `
+   <div class="kp" style="margin-bottom:14px"><div class="k"><small>Cartões em andamento</small><b>${and.length}</b></div><div class="k"><small>Cartões completos</small><b>${comp}</b></div><div class="k"><small>Vouchers esperando uso</small><b>${at}</b></div><div class="k"><small>Vouchers resgatados</small><b>${us}</b></div></div>
+   <div class="hero" style="margin-bottom:16px"><p style="font-weight:800">Quanto custa o prêmio e quanto os fiéis compram</p><p class="big">${brl(custo)} <span style="font-size:.5em">de prêmio para</span> ${brl(rec)} <span style="font-size:.5em">em vendas</span></p>
+    <p style="font-weight:600">A cada R$ 100 que seus clientes do cartão compram, o prêmio custa perto de ${brl(rec ? custo / rec * 100 : 0)}. Estimativa: ${comp} prêmios × ${brl(cp)} de custo de insumos (ficha técnica de exemplo).</p></div>
+   <div class="cols2">
+    <div class="card stack"><h2>Carimbar selo</h2><p class="sub">Para pedido antigo de WhatsApp ou cartão que já vinha no papel. Digite o WhatsApp do cliente.</p>
+     <input type="tel" inputmode="numeric" placeholder="(71) 9 0000-0000" value="${esc(S.ftel)}" data-n="ftel" aria-label="WhatsApp do cliente"><div id="fres"></div></div>
+    <div class="card stack"><h2>Arte do cartão</h2><p class="sub">Gera a imagem do cartão do cliente, já carimbada, para mandar no WhatsApp. Sem editar nada à mão.</p>
+     <select id="fart" aria-label="Cliente">${cs.slice().sort((a, b) => a.nome.localeCompare(b.nome)).map(c => `<option value="${c.id}">${esc(c.nome)} · ${c.selos}/${f.meta}</option>`).join('')}</select>
+     <button class="btn p" data-a="arteSel">${ic('award')}Gerar arte do cartão</button></div>
+   </div>
+   <div class="card stack" style="margin-top:14px"><h2>Regras do programa</h2>
+    <div class="g3">${[['meta', 'Selos para ganhar'], ['pedidoMinimo', 'Pedido mínimo (R$)'], ['validadeDias', 'Validade do prêmio (dias)']].map(([k, t]) => `<label class="f"><span>${t}</span><input type="number" min="1" inputmode="numeric" value="${f[k]}" data-c="fcfg" data-k="${k}"></label>`).join('')}</div>
+    <div class="g2 m1"><label class="f"><span>Prêmio (como aparece para o cliente)</span><input type="text" value="${esc(f.premio)}" data-c="fcfg" data-k="premio"></label><label class="f"><span>Tamanho do prêmio</span><select data-c="fcfg" data-k="premioTamanho">${D.tamanhos.map(t => `<option value="${t.id}" ${f.premioTamanho === t.id ? 'selected' : ''}>${t.nome}</option>`).join('')}</select></label></div>
+    <div class="f"><span>Canais que valem selo</span><div class="chips">${Object.keys(CANAL).map(k => `<button class="chip ${f.canais.includes(k) ? 'on' : ''}" data-a="fcanal" data-v="${k}">${f.canais.includes(k) ? ic('check') : ''}${CANAL[k]}</button>`).join('')}</div></div>
+    <p class="sub">Deixar o iFood de fora é o argumento para o cliente migrar para o pedido direto.</p></div>
+   <div class="card stack" style="margin-top:14px"><h2>Cartões em andamento</h2><div class="lst">${and.sort((a, b) => b.selos - a.selos).map(c => `<div class="li" style="grid-template-columns:minmax(0,1fr) auto;cursor:pointer" data-a="ficha" data-id="${c.id}"><div><b>${esc(c.nome)}</b> <span class="tag ${f.meta - c.selos <= 2 ? 'r' : ''}">${c.selos}/${f.meta}</span><div style="margin-top:6px">${dots(c)}</div></div><button class="btn s" data-a="arte" data-id="${c.id}" aria-label="Arte do cartão de ${esc(c.nome)}">${ic('down')}Arte</button></div>`).join('') || '<div class="empty">Nenhum cartão em andamento.</div>'}</div></div>`;
+};
+function fidBusca() {
+  const el = $('#fres'); if (!el) return; const t = YK.tel(S.ftel), f = D.config.fidelidade;
+  if (t.length < 10) { el.innerHTML = ''; return; }
+  const c = YK.clientePorTel(D, t);
+  el.innerHTML = c ? `<div class="stack" style="gap:10px"><p><b>${esc(c.nome)}</b> · ${c.selos} de ${f.meta} selos${YK.vouchersAtivos(D, c).length ? ' · <span class="tag g">tem voucher</span>' : ''}</p>${dots(c)}<div class="row"><button class="btn p" data-a="selo" data-id="${c.id}">${ic('plus')}Carimbar 1 selo</button><button class="btn" data-a="arte" data-id="${c.id}">${ic('award')}Gerar arte</button></div></div>`
+    : `<div class="stack" style="gap:10px"><p>Esse número ainda não é cliente. Cadastre para começar o cartão:</p><input type="text" id="fnome" placeholder="Nome do cliente" aria-label="Nome do cliente"><button class="btn k" data-a="fNovo">${ic('plus')}Cadastrar e carimbar 1 selo</button></div>`;
+}
+IN.ftel = el => { S.ftel = el.value; fidBusca(); };
+A.fNovo = () => { const n = ($('#fnome').value || '').trim(), t = YK.tel(S.ftel); if (!n) return toast('Digite o nome do cliente.'); const id = YK.uid('c'); mut(d => { d.clientes.push({ id, nome: n, tel: t, bairro: '', endereco: '', selos: 0, cartoesCompletos: 0, vouchers: [], pedidos: 0, gasto: 0, primeiro: new Date().toISOString(), ultimo: null, obs: '', tags: ['novo'] }); }); carimbar(id); render(); };
+CH.fcfg = el => { const k = el.dataset.k; mut(d => { d.config.fidelidade[k] = /premio/.test(k) ? (el.value.trim() || d.config.fidelidade[k]) : Math.max(1, Math.round(num(el.value))); }); toast('Regra salva. Já vale no site.'); };
+A.fcanal = el => mut(d => { const a = d.config.fidelidade.canais, v = el.dataset.v, i = a.indexOf(v); if (i < 0) a.push(v); else a.splice(i, 1); });
+A.arteSel = () => openM({ t: 'arte', cid: $('#fart').value });
+A.arte = el => openM({ t: 'arte', cid: el.dataset.id });
+
+/* arte do cartão em canvas */
+const imgCache = {};
+const loadImg = src => imgCache[src] || (imgCache[src] = new Promise(res => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; }));
+async function drawCard(cv, c, semImg) {
+  const f = D.config.fidelidade, x = cv.getContext('2d'), W = 1080, H = 1350; cv.width = W; cv.height = H;
+  try { await Promise.all([document.fonts.load('80px Bungee'), document.fonts.load('800 40px Archivo'), document.fonts.load('italic 600 30px Archivo')]); } catch (e) {}
+  const [logo, masc] = semImg ? [null, null] : await Promise.all([loadImg('../assets/logo.jpg'), loadImg('../assets/mascote-rosto.jpg')]);
+  const B = 'Bungee, Archivo, sans-serif', AR = 'Archivo, system-ui, sans-serif';
+  const txt = (s, cx, y, font, max, fill) => { let m = /(\d+)px/.exec(font), sz = +m[1]; x.font = font; while (max && x.measureText(s).width > max && sz > 14) { sz -= 2; x.font = font.replace(/\d+px/, sz + 'px'); } x.fillStyle = fill || '#fff'; x.textAlign = 'center'; x.fillText(s, cx, y); };
+  const rr = (a, b, w, h, r) => { x.beginPath(); x.moveTo(a + r, b); x.arcTo(a + w, b, a + w, b + h, r); x.arcTo(a + w, b + h, a, b + h, r); x.arcTo(a, b + h, a, b, r); x.arcTo(a, b, a + w, b, r); x.closePath(); };
+  x.fillStyle = '#D71D1E'; x.fillRect(0, 0, W, H);
+  const r = 60; x.lineWidth = 3; x.strokeStyle = 'rgba(168,18,22,.7)'; // seigaiha tom sobre tom
+  for (let row = 0, y = 0; y < H + 2 * r; row++, y += r / 2) for (let cx = (row % 2 ? r : 0); cx < W + r; cx += 2 * r) {
+    x.beginPath(); x.arc(cx, y, r, 0, 7); x.fillStyle = '#D71D1E'; x.fill(); [1, .72, .44, .18].forEach(k => { x.beginPath(); x.arc(cx, y, r * k, 0, 7); x.stroke(); });
+  }
+  x.strokeStyle = '#fff'; x.lineWidth = 7; x.lineCap = 'round'; // fios de macarrão nos cantos
+  for (let k = 0; k < 3; k++) {
+    x.beginPath(); x.moveTo(W - 250 + k * 36, -10); x.bezierCurveTo(W - 210 + k * 36, 110, W - 110, 130 + k * 30, W + 10, 210 + k * 36); x.stroke();
+    x.beginPath(); x.moveTo(-10, H - 170 - k * 30); x.bezierCurveTo(70, H - 140 - k * 26, 100 + k * 24, H - 80, 170 - k * 30, H + 10); x.stroke();
+  }
+  if (logo) { x.save(); x.beginPath(); x.arc(W / 2, 150, 96, 0, 7); x.clip(); x.drawImage(logo, W / 2 - 96, 54, 192, 192); x.restore(); x.beginPath(); x.arc(W / 2, 150, 96, 0, 7); x.lineWidth = 7; x.strokeStyle = '#fff'; x.stroke(); }
+  else txt('Y-AKIO', W / 2, 185, '96px ' + B, 800);
+  txt('CARTÃO FIDELIDADE', W / 2, 336, '78px ' + B, 940);
+  txt(c.nome, W / 2, 396, '800 44px ' + AR, 900);
+  const cols = Math.max(5, Math.ceil(f.meta / 2)), rows = Math.ceil(f.meta / cols), px = 60, pw = 960, cell = pw / cols, ph = Math.min(rows * cell + 44, 430), py = 440 + (430 - ph) / 2;
+  x.shadowColor = 'rgba(0,0,0,.25)'; x.shadowBlur = 24; x.shadowOffsetY = 8; rr(px, py, pw, ph, 44); x.fillStyle = '#FBF6EF'; x.fill(); x.shadowColor = 'transparent';
+  for (let i = 0; i < f.meta; i++) {
+    const cx = px + cell * (i % cols) + cell / 2, cy = py + 22 + cell * Math.floor(i / cols) + cell / 2, rad = cell * .4;
+    if (i < c.selos) {
+      x.beginPath(); x.arc(cx, cy, rad, 0, 7); x.fillStyle = '#D71D1E'; x.fill();
+      if (masc) { x.save(); x.beginPath(); x.arc(cx, cy, rad, 0, 7); x.clip(); const s = masc.width * .8; x.drawImage(masc, masc.width * .04, masc.height * .1, s, s, cx - rad, cy - rad, rad * 2, rad * 2); x.restore(); }
+      else { x.strokeStyle = '#fff'; x.lineWidth = rad * .16; x.lineCap = 'round'; x.lineJoin = 'round'; x.beginPath(); x.moveTo(cx - rad * .42, cy + rad * .02); x.lineTo(cx - rad * .1, cy + rad * .34); x.lineTo(cx + rad * .46, cy - rad * .32); x.stroke(); }
+      x.beginPath(); x.arc(cx, cy, rad, 0, 7); x.lineWidth = 6; x.strokeStyle = '#A81216'; x.stroke();
+    } else {
+      x.setLineDash([13, 10]); x.beginPath(); x.arc(cx, cy, rad, 0, 7); x.lineWidth = 4; x.strokeStyle = '#A81216'; x.stroke(); x.setLineDash([]);
+      if (i === f.meta - 1) txt('GRÁTIS', cx, cy + rad * .13, Math.round(rad * .36) + 'px ' + B, rad * 1.7, '#A81216'); else txt(String(i + 1), cx, cy + rad * .24, Math.round(rad * .7) + 'px ' + B, 0, 'rgba(168,18,22,.5)');
+    }
+  }
+  const falta = f.meta - c.selos, tem = YK.vouchersAtivos(D, c).length, prem = ('1 ' + f.premio).toUpperCase();
+  txt(c.selos + '/' + f.meta, W / 2, 1012, '112px ' + B, 900);
+  txt(c.selos ? `Falta${falta > 1 ? 'm' : ''} ${falta} selo${falta > 1 ? 's' : ''} para você ganhar` : `Junte ${f.meta} selos e ganhe`, W / 2, 1072, '800 40px ' + AR, 940);
+  txt(prem, W / 2, 1132, '50px ' + B, 940);
+  if (tem) { rr(90, 1160, 900, 66, 33); x.fillStyle = '#FBF6EF'; x.fill(); txt(`VOCÊ JÁ TEM ${tem} PRÊMIO${tem > 1 ? 'S' : ''} PARA USAR`, W / 2, 1205, '32px ' + B, 840, '#A81216'); }
+  txt(`Vale 1 selo por pedido acima de ${brl(f.pedidoMinimo)} · ${f.canais.map(k => CANAL[k]).join(' ou ') || 'pedido direto'}`, W / 2, 1274, '700 28px ' + AR, 760);
+  txt(`${YK.LOJA.whatsappFmt} · @${YK.LOJA.instagram}`, W / 2, 1318, 'italic 600 30px ' + AR, 760);
+}
+MOD.arte = () => {
+  const c = cli(M.cid); if (!c) return null; const f = D.config.fidelidade;
+  const msg = `Oi, ${pnome(c.nome)}! Aqui está seu cartão fidelidade do Y-AKIO atualizado: ${c.selos} de ${f.meta} selos. ${viaSite()}`;
+  return { t: 'Arte do cartão', b: `<canvas class="art" id="artCv" width="1080" height="1350" aria-label="Cartão fidelidade de ${esc(c.nome)}"></canvas>
+   <p style="text-align:center"><b>${esc(c.nome)}</b> · ${c.selos} de ${f.meta} selos</p>
+   <button class="btn p full" data-a="arteDown">${ic('down')}Baixar imagem (PNG)</button>
+   ${navigator.canShare ? `<button class="btn k full" data-a="arteShare">${ic('msg')}Compartilhar direto no WhatsApp</button>` : ''}
+   <a class="btn w full" target="_blank" rel="noopener" href="${YK.waLink(msg, '55' + c.tel)}">${ic('msg')}Abrir conversa com ${esc(pnome(c.nome))}</a>
+   <p class="sub">No computador: baixe a imagem e arraste para a conversa. No celular, o botão de compartilhar já manda a imagem.</p>`, after: () => drawCard($('#artCv'), c) };
+};
+async function arteBlob() {
+  let cv = $('#artCv'); const c = cli(M.cid), get = () => new Promise((res, rej) => { try { cv.toBlob(b => b ? res(b) : rej(new Error('vazio')), 'image/png'); } catch (e) { rej(e); } });
+  // abrindo como arquivo local o navegador bloqueia exportar canvas com imagens: refaz em canvas limpo, sem as fotos
+  try { return await get(); } catch (e) { const n = cv.cloneNode(); cv.replaceWith(n); cv = n; await drawCard(cv, c, true); return get(); }
+}
+const arteNome = () => 'cartao-yakio-' + pnome(cli(M.cid).nome).toLowerCase().normalize('NFD').replace(/[^a-z0-9]/g, '') + '.png';
+A.arteDown = async () => { try { const b = await arteBlob(), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = arteNome(); document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); toast('Imagem baixada. Agora é só mandar no WhatsApp.'); } catch (e) { toast('Não consegui gerar a imagem neste navegador.'); } };
+A.arteShare = async () => { try { const b = await arteBlob(), f = new File([b], arteNome(), { type: 'image/png' }); if (navigator.canShare({ files: [f] })) await navigator.share({ files: [f], title: 'Cartão fidelidade Y-AKIO' }); else A.arteDown(); } catch (e) { if (e && e.name !== 'AbortError') A.arteDown(); } };
+
+/* ============ 5. ESTOQUE ============ */
+const insumo = id => D.estoque.find(e => e.id === id);
+function capacidade(tam, sab) {
+  let n = Infinity, g = null;
+  Object.entries(YK.consumo(D, { itens: [{ tipo: 'yaki', tamanho: tam, sabor: sab, qtd: 1 }] })).forEach(([k, q]) => { const e = insumo(k); if (!e || !q) return; const c = Math.floor(e.qtd / q); if (c < n) { n = c; g = e; } });
+  return { n: isFinite(n) ? n : 0, g };
+}
+function listaCompras() {
+  return baixos().map(e => { let q = Math.max(e.min * 2 - e.qtd, e.min * .5); q = e.un === 'g' ? Math.ceil(q / 500) * 500 : Math.ceil(q / 10) * 10; return { e, q, custo: q * e.custo }; });
+}
+V.estoque = () => {
+  const lo = baixos(), val = sum(D.estoque, e => e.qtd * e.custo);
+  let h = hd('Estoque', 'Baixa sozinho quando o pedido vai para a chapa, pela ficha técnica. Quantidades e custos são de exemplo.') +
+    `<div class="chips" style="margin-bottom:14px">${[['insumos', 'Insumos'], ['compras', 'Lista de compras', lo.length], ['ficha', 'Ficha técnica'], ['hist', 'Histórico']].map(([v, t, n]) => `<button class="chip ${S.est === v ? 'on' : ''}" data-a="sset" data-k="est" data-v="${v}">${t}${n ? `<b>${n}</b>` : ''}</button>`).join('')}</div>`;
+  if (S.est === 'insumos') {
+    h += `<div class="card stack" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><h2>Quantos ainda dá pra fazer hoje</h2><select data-c="stam" style="width:auto" aria-label="Tamanho">${D.tamanhos.map(t => `<option value="${t.id}" ${S.tam === t.id ? 'selected' : ''}>${t.nome}</option>`).join('')}</select></div>
+     <div class="kp">${D.sabores.map(s => { const c = capacidade(S.tam, s.id), p = D.pausados.includes(S.tam + ':' + s.id); return `<div class="k ${c.n < 10 ? 'neg' : ''}"><small>${s.nome}${p ? ' · pausado' : ''}</small><b>${c.n}</b><em>${c.g ? 'limite: ' + esc(c.g.nome.split(' (')[0]) : ''}</em></div>`; }).join('')}</div>
+     <p class="sub">Conta feita pelo insumo que acaba primeiro, se você fizesse só aquele sabor.</p></div>
+     ${lo.length ? `<div class="note" style="margin-bottom:12px;background:var(--redbg);color:var(--redd)">${ic('alert')}<span>${lo.length} ${lo.length > 1 ? 'itens abaixo' : 'item abaixo'} do mínimo: ${lo.map(e => esc(e.nome.split(' (')[0])).join(', ')}. <a href="#" data-a="sset" data-k="est" data-v="compras">Ver lista de compras</a></span></div>` : ''}
+     <div class="lst">${D.estoque.map(e => {
+      const lv = e.qtd < e.min ? 'lo' : e.qtd < e.min * 1.3 ? 'md' : '', w = Math.min(100, e.min ? e.qtd / (e.min * 2.5) * 100 : 100);
+      return `<div class="li est"><div><div class="v">${esc(e.nome)}</div><small>custo ${brl(e.custo * (e.un === 'g' ? 1000 : 1))} por ${e.un === 'g' ? 'kg' : 'un'} · ${brl(e.qtd * e.custo)} parado</small></div>
+       <div><div class="row" style="justify-content:space-between;margin-bottom:6px"><span class="num" style="font-size:20px">${fmtQ(e, e.qtd)}</span>${lv === 'lo' ? '<span class="tag r">Abaixo do mínimo</span>' : lv === 'md' ? '<span class="tag y">Acabando</span>' : ''}</div><div class="barw"><div class="bar ${lv}"><i style="width:${w}%"></i></div><u title="mínimo"></u></div><small style="margin-top:5px">mínimo ${fmtQ(e, e.min)}</small></div>
+       <div class="row"><button class="btn k s" data-a="emov" data-id="${e.id}" data-modo="entrada">${ic('plus')}Entrada</button><button class="btn s" data-a="emov" data-id="${e.id}" data-modo="perda">Ajustar</button></div></div>`;
+    }).join('')}</div><div class="row" style="margin-top:12px;justify-content:space-between"><button class="btn k" data-a="insNovo">${ic('plus')}Novo insumo</button><p class="demo">Valor total parado em estoque: <b>${brl(val)}</b></p></div>`;
+  } else if (S.est === 'compras') {
+    const l = listaCompras(), tot = sum(l, x => x.custo), txt = `Lista de compras Y-AKIO · ${dm(new Date())}\n\n${l.map(x => `• ${x.e.nome}: ${fmtQ(x.e, x.q)}`).join('\n')}\n\nEstimativa: ${brl(tot)}`;
+    h += l.length ? `<div class="card stack"><h2>Comprar agora</h2><p class="sub">Tudo que está abaixo do mínimo, com a quantidade para voltar a ter folga (duas vezes o mínimo).</p>
+     <div class="tw"><table class="tb"><tr><th>Item</th><th>Tem</th><th>Mínimo</th><th>Comprar</th><th>Custo estimado</th></tr>${l.map(x => `<tr><td><b>${esc(x.e.nome)}</b></td><td style="color:var(--redd);font-weight:800">${fmtQ(x.e, x.e.qtd)}</td><td>${fmtQ(x.e, x.e.min)}</td><td><b>${fmtQ(x.e, x.q)}</b></td><td>${brl(x.custo)}</td></tr>`).join('')}<tr><td colspan="4"><b>Total estimado</b></td><td class="num">${brl(tot)}</td></tr></table></div>
+     <textarea id="compTxt" rows="${l.length + 5}" aria-label="Texto da lista">${esc(txt)}</textarea>
+     <div class="row"><button class="btn w" data-a="compWa">${ic('msg')}Enviar por WhatsApp</button><button class="btn" data-a="copy" data-from="#compTxt">${ic('copy')}Copiar lista</button></div></div>` : `<div class="empty">Nada abaixo do mínimo. Estoque em dia.</div>`;
+  } else if (S.est === 'ficha') {
+    const F = D.ficha, nm = k => esc((insumo(k) || { nome: k }).nome.split(' (')[0]);
+    h += `<div class="card stack" style="margin-bottom:14px"><h2>Receita por 100 g de yakisoba pronto</h2><p class="sub">Ficha de exemplo. Ajuste com as suas medidas: é ela que faz a baixa do estoque e calcula o custo de cada prato.</p>
+      <h3>Base (todos os sabores)</h3><div class="g3">${Object.keys(F.base).map(k => `<label class="f"><span>${nm(k)} (g)</span><input type="text" inputmode="decimal" value="${F.base[k]}" data-c="ficha" data-g="base" data-k="${k}"></label>`).join('')}</div>
+      <h3>Proteína de cada sabor</h3>${D.sabores.map(s => `<div class="row" style="align-items:flex-end"><b style="min-width:110px;padding-bottom:12px">${s.nome}</b>${Object.keys(F.proteina[s.id] || {}).map(k => `<label class="f" style="width:120px"><span>${nm(k)} (g)</span><input type="text" inputmode="decimal" value="${F.proteina[s.id][k]}" data-c="ficha" data-g="${s.id}" data-k="${k}"></label>`).join('')}</div>`).join('')}</div>
+     <div class="card stack"><h2>Custo de insumos e margem por prato</h2><div class="tw"><table class="tb"><tr><th>Sabor</th>${D.tamanhos.map(t => `<th>${t.nome}</th>`).join('')}</tr>
+      ${D.sabores.map(s => `<tr><td><b>${s.nome}</b></td>${D.tamanhos.map(t => { const c = custoYaki(t.id, s.id), p = YK.preco(D, t.id, s.id), m = pct(c, p); return `<td style="white-space:nowrap">${brl(c)}<br><span class="tag ${m > 40 ? 'r' : m > 32 ? 'y' : 'g'}">${m}% do preço</span></td>`; }).join('')}</tr>`).join('')}</table></div>
+      <p class="sub">Quanto menor a porcentagem, mais sobra. Inclui embalagem e hashi.</p></div>`;
+  } else {
+    const tp = { saida: ['Saída', ''], entrada: ['Compra', 'g'], perda: ['Perda', 'r'], ajuste: ['Contagem', 'y'] };
+    h += D.movEstoque.length ? `<div class="lst">${D.movEstoque.slice(0, 60).map(m => `<div class="li" style="grid-template-columns:auto minmax(0,1fr)"><div><span class="tag ${(tp[m.tipo] || [])[1] || ''}">${(tp[m.tipo] || [m.tipo])[0]}</span><small style="margin-top:4px">${dm(m.t)} ${hm(m.t)}</small></div><div><b>${esc(m.ref || '')}</b>${m.valor ? ' · ' + brl(m.valor) : ''}<small>${Object.entries(m.itens || {}).map(([k, q]) => { const e = insumo(k) || { nome: k, un: 'un' }; const s = m.tipo === 'saida' ? -q : q; return esc(e.nome.split(' (')[0]) + ' ' + (s < 0 ? '−' : '+') + fmtQ(e, Math.abs(s)); }).join(' · ')}</small></div></div>`).join('')}</div>` : '<div class="empty">Sem movimentações ainda. Mande um pedido para a chapa e a saída aparece aqui.</div>';
+  }
+  return h;
+};
+CH.stam = el => { S.tam = el.value; render(); };
+A.compWa = () => window.open('https://wa.me/?text=' + encodeURIComponent($('#compTxt').value), '_blank', 'noopener');
+CH.ficha = el => { mut(d => { const g = el.dataset.g, o = g === 'base' ? d.ficha.base : d.ficha.proteina[g]; o[el.dataset.k] = Math.max(0, num(el.value)); }); toast('Ficha técnica atualizada.'); };
+A.insNovo = () => openM({ t: 'ins', nome: '', un: 'g', q: '', min: '', custo: '' });
+MOD.ins = () => { const u = M.un === 'g' ? 'kg' : 'unidades'; return { t: 'Novo insumo', b: `${fld('Nome', inp('nome', 'ex.: Óleo de gergelim, Sacola kraft'))}<div class="f"><span>Como você conta?</span>${segBtn('un', [['g', 'Por peso (kg)'], ['un', 'Por unidade']], M.un)}</div>
+  <div class="g3">${fld(`Tem agora (${u})`, inp('q', '0', 'text', 'inputmode="decimal"'))}${fld(`Mínimo (${u})`, inp('min', '0', 'text', 'inputmode="decimal"'))}${fld(`Custo por ${M.un === 'g' ? 'kg' : 'unidade'} (R$)`, inp('custo', '0,00', 'text', 'inputmode="decimal"'))}</div>
+  <p class="sub">Entra no controle, no alerta de mínimo e na lista de compras. A baixa automática por pedido vale só para o que está na ficha técnica; os outros você ajusta por contagem.</p><button class="btn p full" data-a="insOk">${ic('check')}Cadastrar insumo</button>` }; };
+A.insOk = () => { const n = M.nome.trim(), k = M.un === 'g' ? 1000 : 1; if (!n) return toast('Dê um nome ao insumo.'); const q = Math.max(0, num(M.q) * k), t = new Date().toISOString(), id = YK.uid('i');
+  mut(d => { d.estoque.push({ id, nome: n, un: M.un, qtd: q, min: Math.max(0, num(M.min) * k), custo: Math.max(0, num(M.custo) / k) }); d.movEstoque.unshift({ t, tipo: 'ajuste', ref: 'Cadastro: ' + n, itens: { [id]: q } }); }); closeM(); toast(n + ' cadastrado no estoque.'); };
+A.emov = el => openM({ t: 'emov', id: el.dataset.id, modo: el.dataset.modo, q: '', valor: '', ref: '' });
+MOD.emov = () => {
+  const e = insumo(M.id); if (!e) return null; const u = e.un === 'g' ? 'kg' : 'unidades', k = e.un === 'g' ? 1000 : 1;
+  if (M.modo === 'config' && M.min == null) { M.min = String(e.min / k).replace('.', ','); M.custo = (e.custo * k).toFixed(2).replace('.', ','); }
+  const corpo = { entrada: `${fld(`Quanto chegou (${u})`, inp('q', '0', 'text', 'inputmode="decimal"'))}${fld('Valor pago no total (R$), opcional', inp('valor', 'atualiza o custo médio', 'text', 'inputmode="decimal"'))}${fld('Fornecedor ou anotação', inp('ref', ''))}`,
+    perda: `${fld(`Quanto perdeu ou descartou (${u})`, inp('q', '0', 'text', 'inputmode="decimal"'))}${fld('Motivo', inp('ref', 'ex.: passou do ponto, caiu'))}`,
+    contagem: `${fld(`Quanto tem de verdade agora (${u})`, inp('q', String(e.qtd / k).replace('.', ','), 'text', 'inputmode="decimal"'))}`,
+    config: `${fld(`Avisar quando ficar abaixo de (${u})`, inp('min', '', 'text', 'inputmode="decimal"'))}${fld(`Custo por ${e.un === 'g' ? 'kg' : 'unidade'} (R$)`, inp('custo', '', 'text', 'inputmode="decimal"'))}` }[M.modo];
+  return { t: esc(e.nome.split(' (')[0]), b: `<p>Agora: <b class="num">${fmtQ(e, e.qtd)}</b> · mínimo ${fmtQ(e, e.min)}</p>${segBtn('modo', [['entrada', 'Entrada de compra'], ['perda', 'Perda'], ['contagem', 'Contagem'], ['config', 'Mínimo e custo']], M.modo)}${corpo}<button class="btn p full" data-a="emovOk">${ic('check')}Salvar</button>` };
+};
+A.emovOk = () => {
+  const e0 = insumo(M.id), k = e0.un === 'g' ? 1000 : 1, q = num(M.q) * k, nome = e0.nome.split(' (')[0], t = new Date().toISOString();
+  if (M.modo !== 'config' && (M.q === '' || q < 0 || (M.modo !== 'contagem' && q <= 0))) return toast('Digite a quantidade.');
+  mut(d => {
+    const e = d.estoque.find(x => x.id === M.id);
+    if (M.modo === 'entrada') { const v = num(M.valor); if (v > 0) e.custo = (e.qtd * e.custo + v) / (e.qtd + q); e.qtd += q; d.movEstoque.unshift({ t, tipo: 'entrada', ref: 'Compra: ' + nome + (M.ref.trim() ? ' (' + M.ref.trim() + ')' : ''), itens: { [e.id]: q }, valor: v || 0 }); }
+    else if (M.modo === 'perda') { const r = Math.min(q, e.qtd); e.qtd -= r; d.movEstoque.unshift({ t, tipo: 'perda', ref: 'Perda: ' + nome + (M.ref.trim() ? ' (' + M.ref.trim() + ')' : ''), itens: { [e.id]: -r } }); }
+    else if (M.modo === 'contagem') { d.movEstoque.unshift({ t, tipo: 'ajuste', ref: 'Contagem: ' + nome, itens: { [e.id]: q - e.qtd } }); e.qtd = q; }
+    else { e.min = Math.max(0, num(M.min) * k); e.custo = Math.max(0, num(M.custo) / k); }
+  });
+  closeM(); toast(nome + ': estoque atualizado.');
+};
+
+/* ============ 6. CARDÁPIO ============ */
+const swBtn = (k, lbl) => { const p = D.pausados.includes(k); return `<button class="sw ${p ? 'off' : ''}" data-a="pausa" data-k="${k}" aria-label="${esc(lbl)}: ${p ? 'pausado, tocar para voltar' : 'no ar, tocar para pausar'}">${ic(p ? 'pause' : 'check')}${p ? 'Pausado' : 'No ar'}</button>`; };
+V.cardapio = () => {
+  const a = YK.aberta(D), c = D.config;
+  const abas = `<div class="chips" style="margin-bottom:14px">${[['menu', 'Cardápio e loja'], ['pag', 'Pagamentos']].map(([v, t]) => `<button class="chip ${S.card === v ? 'on' : ''}" data-a="sset" data-k="card" data-v="${v}">${t}</button>`).join('')}</div>`;
+  if (S.card === 'pag') return hd('Cardápio', 'Como o cliente pode pagar no site, quanto cada forma custa e o que já caiu hoje.') + abas + vPagamentos();
+  return hd('Cardápio', 'Preço mudou ou acabou um sabor? Mexeu aqui, o site muda na mesma hora.') + abas + `
+   <div class="card stack" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><h2>Loja ${a ? 'aberta' : 'fechada'} agora</h2>${ljHtml()}</div>
+    ${segBtn('lojaAberta', [['auto', 'Seguir o horário'], ['aberta', 'Abrir agora'], ['fechada', 'Fechar agora']], c.lojaAberta, 'loja')}
+    <p class="sub">${c.lojaAberta === 'auto' ? esc(YK.LOJA.horarios.texto) + '. O site abre e fecha sozinho.' : c.lojaAberta === 'aberta' ? 'Aberta à força: o site aceita pedido mesmo fora do horário. Lembre de voltar para "Seguir o horário".' : 'Fechada à força: o site não aceita pedido. Use quando a chapa lotar ou em imprevisto.'}</p></div>
+   <div class="card" style="margin-bottom:14px"><h2 style="margin-bottom:4px">Yakisoba: preços e disponibilidade</h2><p class="sub" style="margin-bottom:10px">Preços do cardápio fixo (venda direta). ${D.pausados.length ? `<b style="color:var(--redd)">${D.pausados.length} item(ns) pausado(s).</b>` : 'Tudo no ar.'}</p>
+    <div class="mxh"><span>Sabor</span>${D.tamanhos.map(t => `<span>${t.nome}</span>`).join('')}</div>
+    ${D.sabores.map(s => { const all = D.tamanhos.every(t => D.pausados.includes(t.id + ':' + s.id)); return `<div class="mx"><div class="nm row" style="justify-content:space-between"><b style="font-size:18px">${s.nome}</b><button class="btn s ${all ? 'p' : ''}" data-a="pausaSab" data-s="${s.id}">${all ? 'Voltar sabor' : 'Pausar sabor'}</button></div>
+     ${D.tamanhos.map(t => `<div class="cel"><label>${t.nome}</label><input type="text" inputmode="decimal" value="${String(D.precos[t.id][s.id]).replace('.', ',')}" data-c="preco" data-t="${t.id}" data-s="${s.id}" aria-label="Preço ${t.nome} ${s.nome}">${swBtn(t.id + ':' + s.id, t.nome + ' ' + s.nome)}</div>`).join('')}</div>`; }).join('')}</div>
+   <div class="card stack" style="margin-bottom:14px"><h2>Rolinhos e bebidas</h2>
+    ${D.extras.map((x, i) => `<div class="row" style="border-top:1.5px solid var(--line);padding-top:10px"><input type="text" value="${esc(x.nome)}" data-c="xnome" data-i="${i}" style="flex:1 1 200px" aria-label="Nome do item"><input type="text" inputmode="decimal" value="${x.preco.toFixed(2).replace('.', ',')}" data-c="xpreco" data-i="${i}" style="width:96px" aria-label="Preço de ${esc(x.nome)}">${swBtn(x.id, x.nome)}${x.real ? '' : '<span class="tag y">preço de exemplo</span>'}<button class="x" data-a="xDel" data-i="${i}" aria-label="Remover ${esc(x.nome)}">${ic('trash')}</button></div>`).join('')}
+    <button class="btn k" style="align-self:flex-start" data-a="xAdd">${ic('plus')}Adicionar item</button></div>
+   <div class="card stack"><h2>Ajustes da operação</h2><div class="g3"><label class="f"><span>Tempo de preparo (min)</span><input type="number" inputmode="numeric" min="5" value="${c.tempoPreparoMin}" data-c="cfg" data-k="tempoPreparoMin"></label>
+    <label class="f"><span>Taxa do iFood (%), estimativa</span><input type="text" inputmode="decimal" value="${c.taxaIfoodPct}" data-c="cfg" data-k="taxaIfoodPct"></label><label class="f"><span>Chave Pix</span><input type="text" value="${esc(c.pixChave)}" data-c="cfg" data-k="pixChave"></label></div>
+    <p class="sub">O tempo de preparo define quando o cartão do pedido fica vermelho no quadro.</p></div>`;
+};
+function vPagamentos() {
+  const c = cfgPag(), mp = c.mercadoPago, hoje = D.pedidos.filter(p => viaMP(p) && p.status !== 'cancelado' && dias(p.pagoEm || p.criado) === 0), br = sum(hoje, p => p.total), tx = sum(hoje, taxaMP);
+  return `<div class="card stack" style="margin-bottom:14px"><div class="row" style="justify-content:space-between"><h2>Mercado Pago</h2><span class="tag ${mp.conectado ? 'g' : 'rl'}">${ic(mp.conectado ? 'check' : 'alert')}${mp.conectado ? 'Conta conectada' : 'Desconectada'}</span></div>
+    <p>${mp.conectado ? `Conta: <b>${esc(mp.conta || 'sem nome')}</b>. O dinheiro dos pagamentos online cai direto nela.` : 'Sem a conta conectada, o site só oferece pagamento na entrega.'}</p>
+    <div class="note">${ic('alert')}<span>Conta de demonstração: nenhum pagamento real é processado. Na versão final, você conecta a sua conta com um clique.</span></div>
+    <button class="btn s" style="align-self:flex-start" data-a="mpTog">${mp.conectado ? 'Desconectar (simular)' : 'Conectar conta (simular)'}</button></div>
+   <div class="card stack" style="margin-bottom:14px"><h2>Formas de pagamento no site</h2><p class="sub">Desligou aqui, some do site na hora. As taxas são as do seu plano no Mercado Pago (valores de exemplo).</p>
+    ${YK.PAGAMENTOS.map(f => { const on = c.aceita[f.id] !== false; return `<div class="row" style="border-top:1.5px solid var(--line);padding-top:10px"><div style="flex:1 1 180px"><b>${esc(f.nome)}</b><br><span class="tag">${f.online ? 'pago online, na hora do pedido' : 'cobrado na entrega ou retirada'}</span></div>
+      ${f.online ? `<label class="row" style="flex-wrap:nowrap;font-weight:700;font-size:15px">Taxa<input type="text" inputmode="decimal" value="${String(c.taxasPct[f.id] == null ? 0 : c.taxasPct[f.id]).replace('.', ',')}" data-c="pagTaxa" data-k="${f.id}" style="width:84px" aria-label="Taxa de ${esc(f.nome)} em %">%</label>` : '<span class="tag g">sem taxa</span>'}
+      <button class="sw ${on ? '' : 'off'}" data-a="pagTog" data-k="${f.id}" aria-label="${esc(f.nome)}: ${on ? 'ligado, tocar para desligar' : 'desligado, tocar para ligar'}">${ic(on ? 'check' : 'pause')}${on ? 'Ligado' : 'Desligado'}</button></div>`; }).join('')}</div>
+   <div class="card stack"><h2>Recebimentos online de hoje</h2>
+    <div class="kp"><div class="k"><small>Recebido online</small><b>${brl(br)}</b><em>${hoje.length} pedido${hoje.length === 1 ? '' : 's'}</em></div><div class="k neg"><small>Taxas do Mercado Pago</small><b>${brl(tx)}</b><em>estimativa</em></div><div class="k pos"><small>Cai na conta</small><b>${brl(br - tx)}</b></div></div>
+    ${hoje.length ? `<div class="tw"><table class="tb"><tr><th>Hora</th><th>Pedido</th><th>Forma</th><th>Valor</th><th>Taxa</th><th>Líquido</th></tr>${hoje.map(p => `<tr><td>${hm(p.pagoEm || p.criado)}</td><td><b>#${p.num}</b> ${esc(p.cliente.nome)}</td><td>${esc(pagN(p.pagamento))}</td><td>${brl(p.total)}</td><td>${brl(taxaMP(p))}</td><td><b>${brl(p.total - taxaMP(p))}</b></td></tr>`).join('')}</table></div>` : '<div class="empty">Nenhum pagamento online hoje ainda.</div>'}
+    <p class="sub">Pix recebido direto na sua chave (pedido de WhatsApp ou balcão) não passa pelo Mercado Pago e não tem taxa.</p></div>`;
+}
+A.mpTog = () => { mut(d => { const m = cfgPag(d).mercadoPago; m.conectado = !m.conectado; if (m.conectado && !m.conta) m.conta = 'Y-AKIO (demonstração)'; }); toast(cfgPag().mercadoPago.conectado ? 'Conta conectada (demonstração).' : 'Conta desconectada (demonstração).'); };
+A.pagTog = el => { const k = el.dataset.k; mut(d => { const a = cfgPag(d).aceita; a[k] = a[k] === false; }); toast(pagN(k) + (cfgPag().aceita[k] === false ? ': desligado no site.' : ': ligado no site.'), 2500); };
+CH.pagTaxa = el => { mut(d => { cfgPag(d).taxasPct[el.dataset.k] = Math.max(0, num(el.value)); }); toast('Taxa salva.', 2200); };
+A.loja = el => { mut(d => { d.config.lojaAberta = el.dataset.v; }); toast(YK.aberta(D) ? 'Site aceitando pedidos.' : 'Site fechado para pedidos.'); };
+A.pausa = el => { const k = el.dataset.k; mut(d => { const i = d.pausados.indexOf(k); if (i < 0) d.pausados.push(k); else d.pausados.splice(i, 1); }); toast(D.pausados.includes(k) ? 'Pausado. Sumiu do site.' : 'De volta ao site.', 2500); };
+A.pausaSab = el => { const s = el.dataset.s; mut(d => { const ks = d.tamanhos.map(t => t.id + ':' + s), all = ks.every(k => d.pausados.includes(k)); d.pausados = d.pausados.filter(k => !ks.includes(k)); if (!all) d.pausados.push(...ks); }); };
+CH.preco = el => { const v = num(el.value); if (v <= 0) return toast('Preço inválido.'); mut(d => { d.precos[el.dataset.t][el.dataset.s] = v; }); toast(`${tamN(el.dataset.t)} ${sabN(el.dataset.s)} agora custa ${brl(v)}.`, 2500); };
+CH.xpreco = el => { const v = num(el.value); if (v <= 0) return toast('Preço inválido.'); mut(d => { d.extras[+el.dataset.i].preco = v; d.extras[+el.dataset.i].real = true; }); };
+CH.xnome = el => mut(d => { const x = d.extras[+el.dataset.i]; x.nome = el.value.trim() || x.nome; });
+A.xAdd = () => mut(d => d.extras.push({ id: YK.uid('x'), cat: 'Bebidas', nome: 'Novo item', preco: 5, real: true }));
+A.xDel = el => { if (confirm('Remover este item do cardápio?')) mut(d => { const x = d.extras.splice(+el.dataset.i, 1)[0]; d.pausados = d.pausados.filter(k => k !== x.id); }); };
+CH.cfg = el => { const k = el.dataset.k; mut(d => { d.config[k] = k === 'pixChave' ? el.value.trim() : Math.max(0, num(el.value)); }); toast('Ajuste salvo.', 2200); };
+
+/* ============ 7. RESULTADOS ============ */
+const hbars = (rows, dark) => { const mx = Math.max(1, ...rows.map(r => r[1])); return `<div class="hb">${rows.map(([l, v, t]) => `<span>${esc(l)}</span><span class="t"><i class="${dark ? 'k' : ''}" style="width:${v / mx * 100}%"></i></span><b>${t != null ? t : v}</b>`).join('')}</div>`; };
+function vbars(rows) {
+  const mx = Math.max(1, ...rows.map(r => r[1])), st = Math.ceil(rows.length / 8);
+  return `<div class="vb" role="img" aria-label="Gráfico de barras">${rows.map(([l, v, t]) => `<div class="${v ? '' : 'z'}" style="height:${Math.max(1.5, v / mx * 100)}%" title="${esc(l)}: ${t != null ? t : v}"></div>`).join('')}</div><div class="vbl">${rows.map(([l], i) => `<span>${i % st === 0 ? esc(l) : ''}</span>`).join('')}</div>`;
+}
+V.resultados = () => {
+  const nd = S.per === 'hoje' ? 1 : +S.per, ini = sod() - (nd - 1) * DIA, c = D.config;
+  const ps = D.pedidos.filter(p => p.status !== 'cancelado' && +new Date(p.criado) >= ini), fat = sum(ps, p => p.total), n = ps.length;
+  const dir = ps.filter(p => p.canal !== 'ifood'), fd = sum(dir, p => p.total), eco = fd * c.taxaIfoodPct / 100, fi = fat - fd;
+  const txMP = sum(ps, taxaMP), brMP = sum(ps.filter(viaMP), p => p.total);
+  const cmv = sum(ps, custoPed), prod = sum(ps, p => p.subtotal), ret = ps.filter(p => p.tipo === 'retirada'), pr = pct(ret.length, n);
+  const cont = (f) => { const o = {}; ps.forEach(p => p.itens.forEach(i => { if (i.tipo === 'yaki') o[i[f]] = (o[i[f]] || 0) + i.qtd; })); return o; };
+  const sb = cont('sabor'), tm = cont('tamanho'), hrs = {}; ps.forEach(p => { const h = new Date(p.criado).getHours(); hrs[h] = (hrs[h] || 0) + 1; });
+  const hk = [...new Set([11, 12, 13, 18, 19, 20].concat(Object.keys(hrs).map(Number)))].sort((a, b) => a - b), pico = hk.slice().sort((a, b) => (hrs[b] || 0) - (hrs[a] || 0))[0];
+  const porDia = Array.from({ length: nd }, (_, i) => { const d0 = ini + i * DIA, l = ps.filter(p => sod(+new Date(p.criado)) === d0); return [dm(d0), sum(l, p => p.total), brl(sum(l, p => p.total)) + ' · ' + l.length + ' pedidos']; });
+  const lbl = S.per === 'hoje' ? 'hoje' : 'nos últimos ' + nd + ' dias';
+  return hd('Resultados', 'O que entrou, de onde veio e quanto ficou.', segBtn('per', [['hoje', 'Hoje'], ['7', '7 dias'], ['30', '30 dias']], S.per, 'sset')) + `
+   <div class="hero" style="margin-bottom:14px"><p style="font-weight:800;font-size:18px">Quanto você deixou de pagar ao iFood ${lbl}</p><p class="big">${brl(eco)}</p>
+    <p style="font-weight:600">${brl(fd)} vendidos direto (site, WhatsApp e balcão) × <input type="text" inputmode="decimal" value="${c.taxaIfoodPct}" data-c="cfg" data-k="taxaIfoodPct" aria-label="Taxa do iFood em %"> % de taxa do iFood. <b>Estimativa</b>: ajuste a porcentagem para a do seu contrato.</p>
+    <p style="font-weight:600;margin-top:6px">Para a conta ficar honesta: receber online pelo Mercado Pago custou perto de ${brl(txMP)} em taxas (${brl(brMP)} pagos no site). <b>Economia líquida: ${brl(eco - txMP)}.</b></p>
+    ${fi ? `<p style="font-weight:600;margin-top:6px">Os ${brl(fi)} que ainda vieram pelo iFood custaram perto de ${brl(fi * c.taxaIfoodPct / 100)} em taxa.</p>` : ''}</div>
+   <div class="kp" style="margin-bottom:14px"><div class="k"><small>Faturamento</small><b>${brl(fat)}</b></div><div class="k"><small>Pedidos</small><b>${n}</b></div><div class="k"><small>Ticket médio</small><b>${brl(n ? fat / n : 0)}</b></div>
+    <div class="k"><small>Custo dos insumos (CMV)</small><b>${brl(cmv)}</b><em>${pct(cmv, prod)}% das vendas · estimado pela ficha técnica</em></div><div class="k pos"><small>Sobra depois dos insumos</small><b>${brl(prod - cmv)}</b></div><div class="k"><small>Taxas de pagamento online</small><b>${brl(txMP)}</b><em>Mercado Pago · estimativa</em></div></div>
+   ${n ? `<div class="cols2">
+    ${nd > 1 ? `<div class="card stack"><h2>Faturamento por dia</h2>${vbars(porDia)}<p class="sub">Segunda a loja fecha. Passe o dedo ou o mouse na barra para ver o valor.</p></div>` : ''}
+    <div class="card stack"><h2>Horário de pico</h2>${vbars(hk.map(h => [h + 'h', hrs[h] || 0, (hrs[h] || 0) + ' pedidos']))}<p class="sub">Mais movimento às <b>${pico}h</b>. É quando vale ter a chapa adiantada.</p></div>
+    <div class="card stack"><h2>Retirada x entrega</h2><div class="split"><i style="width:${Math.max(pr, n - ret.length ? 0 : 100)}%">${pr >= 12 ? 'Retirada ' + pr + '%' : ''}</i><i style="flex:1">${100 - pr >= 12 ? 'Entrega ' + (100 - pr) + '%' : ''}</i></div><p>${ret.length} retiradas (${brl(sum(ret, p => p.total))}) · ${n - ret.length} entregas (${brl(fat - sum(ret, p => p.total))})</p></div>
+    <div class="card stack"><h2>De onde vieram os pedidos</h2>${hbars(Object.keys(CANAL).map(k => { const l = ps.filter(p => p.canal === k); return [CANAL[k], sum(l, p => p.total), l.length + ' · ' + brl(sum(l, p => p.total))]; }), true)}<p class="sub">${pct(dir.length, n)}% dos pedidos já são diretos, sem taxa de aplicativo.</p></div>
+    <div class="card stack"><h2>Formas de pagamento</h2>${hbars(YK.PAGAMENTOS.map(f => { const l = ps.filter(p => p.pagamento === f.id); return [f.nome, sum(l, p => p.total), l.length + ' · ' + brl(sum(l, p => p.total))]; }).filter(r => r[1]).sort((a, b) => b[1] - a[1]))}<p class="sub">Taxas do Mercado Pago no período: <b>${brl(txMP)}</b> (${pct(txMP * 100, (brMP || 1) * 100) ? (txMP / (brMP || 1) * 100).toFixed(1).replace('.', ',') : '0'}% do que foi pago no site). Pix direto, dinheiro e maquininha ficam fora desta conta.</p></div>
+    <div class="card stack"><h2>Sabores mais vendidos</h2>${hbars(D.sabores.map(s => [s.nome, sb[s.id] || 0]).sort((a, b) => b[1] - a[1]))}</div>
+    <div class="card stack"><h2>Tamanhos mais vendidos</h2>${hbars(D.tamanhos.map(t => [t.nome, tm[t.id] || 0]).sort((a, b) => b[1] - a[1]))}</div></div>` : '<div class="empty">Nenhum pedido neste período ainda.</div>'}
+   <p class="demo" style="margin-top:14px">Demonstração Zync: histórico, custos e taxa do iFood são dados de exemplo.</p>`;
+};
+
+/* ============ início ============ */
+YK.on(d => {
+  let novo = null;
+  d.pedidos.forEach(p => { if (!known.has(p.id)) { known.add(p.id); if (p.status === 'novo' && !silent) { S.fresh.add(p.id); novo = p; setTimeout(() => S.fresh.delete(p.id), 25000); } } });
+  D = d;
+  if (novo) { beep(); toast(`Pedido novo! #${novo.num} · ${novo.cliente.nome} · ${CANAL[novo.canal] || ''}`, 7000); }
+  if (M && M.t === 'ped' && !ped(M.id)) closeM();
+  safeRender();
+});
+document.addEventListener('pointerdown', () => { try { actx = actx || new (window.AudioContext || window.webkitAudioContext)(); actx.resume(); } catch (e) {} }, { once: true });
+gerarDemo(); D = YK.db(); D.pedidos.forEach(p => known.add(p.id));
+if (V[location.hash.slice(1)]) S.view = location.hash.slice(1);
+render();
+setInterval(() => { if (!M && (S.view === 'pedidos' || S.view === 'entregas')) safeRender(); }, 30000);
+</script>
+</body>
+</html>

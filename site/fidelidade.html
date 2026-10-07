@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cartão fidelidade · Y-AKIO</title>
+<meta name="description" content="Cartão fidelidade digital do Y-AKIO: junte selos a cada pedido direto e ganhe um yakisoba individual. Veja seus selos pelo WhatsApp.">
+<meta name="theme-color" content="#D71D1E">
+<link rel="icon" href="../assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500;1,600&family=Bungee&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+</head>
+<body data-page="fidelidade">
+<div id="topo"></div>
+<main>
+<section class="fid sei" id="fidelidade" style="padding-top:22px"><div class="wrap fid-g">
+  <div class="fid-txt">
+    <span class="tag">Cartão fidelidade digital</span>
+    <h1 class="bg" data-fid-tit style="font-size:28px;margin:12px 0 10px"></h1>
+    <p>Sem aplicativo e sem senha. Digite o seu WhatsApp e veja o seu cartão, os selos e o prêmio.</p>
+    <form class="fid-form" id="fidForm" novalidate>
+      <label class="vh" for="cardTel">Seu WhatsApp com DDD</label>
+      <input class="inp" id="cardTel" data-f="cardTel" type="tel" inputmode="numeric" autocomplete="tel-national" placeholder="(71) 90000-0000" maxlength="16">
+      <button class="btn w" type="submit">Ver meu cartão</button>
+    </form>
+    <div class="dchips" id="dchips"></div>
+    <ul class="regras" id="regras"></ul>
+  </div>
+  <div id="cartao" aria-live="polite"></div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <div class="sec-h"><h2 class="bg">O prêmio</h2><p>Completou o cartão, o yakisoba é por conta da casa.</p></div>
+  <div class="premio" id="premioBox"></div>
+</div></section>
+
+<section class="sec alt"><div class="wrap">
+  <div class="sec-h"><h2 class="bg">Como juntar selos</h2></div>
+  <ol class="como">
+    <li><div><b>Peça direto</b><span>Pelo site ou pelo WhatsApp da loja. Pedido pelo iFood não entra.</span></div></li>
+    <li><div><b>Use o mesmo WhatsApp</b><span>É o número que identifica o seu cartão. Não precisa de senha.</span></div></li>
+    <li><div><b>O selo cai sozinho</b><span>Quando o pedido é concluído, o carimbo aparece no cartão.</span></div></li>
+    <li><div><b>Resgate no pedido</b><span>Cartão completo: o site oferece o yakisoba grátis na hora de finalizar.</span></div></li>
+  </ol>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <div class="sec-h"><h2 class="bg">Perguntas frequentes</h2></div>
+  <div class="faq" id="faq"></div>
+  <div class="more"><a class="btn" href="cardapio.html">Pedir e ganhar selo</a></div>
+</div></section>
+</main>
+<div id="rodape"></div>
+<script src="../shared/data.js"></script>
+<script src="site.js"></script>
+</body>
+</html>
